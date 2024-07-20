@@ -2,10 +2,9 @@ use starknet::{ContractAddress};
 
 #[starknet::interface]
 pub trait IEvent<TContractState> {
-
     fn create_event (ref self: TContractState, _theme: felt252, _organizer: ContractAddress, _event_type: felt252, _start_date: u256, _end_date: u256, _ticket_price: u256);
     fn reschedule_event (ref self: TContractState, _event_id: u32, _start_date: u256, _end_date: u256);
-    fn cancel_event (ref self : TContractState, event_id: u32);
+    fn cancel_event (ref self : TContractState, _event_id: u32);
     // fn create_ticket (ref self : TContractState, event_id: u32) -> bool;
     // fn purchase_ticket (ref self : TContractState, event_id: u32) -> bool;
     // fn resale_ticket (ref self : TContractState, event_id: u32) -> bool;
@@ -30,7 +29,6 @@ struct Events {
 
 #[starknet::contract]
 pub mod event_contract {
-
     use super::{Events, IEvent};
     use starknet::{get_caller_address, ContractAddress};
     use core::num::traits::zero::Zero;
@@ -73,16 +71,14 @@ pub mod event_contract {
     // implementions and functions
     #[abi(embed_v0)]
     impl eventImpl of IEvent<ContractState>{
-        
         fn create_event (ref self: ContractState, _theme: felt252, _organizer: ContractAddress, _event_type: felt252, _start_date: u256, _end_date: u256, _ticket_price: u256) {
-
             let caller = get_caller_address();
             let _event_count = self.event_count.read() + 1;
 
             // assert not zero ContractAddress
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
 
-            // deploy tickets contract here
+            //TODO: deploy tickets contract here
 
             // new event struct instance
             let event_instance = Events {
@@ -106,9 +102,7 @@ pub mod event_contract {
 
             // emit event for event creation
             self.emit(EventCreated {id: _event_count, organizer: caller});
-
         }
-
 
         fn reschedule_event (ref self: ContractState, _event_id: u32, _start_date: u256, _end_date: u256) {
             
@@ -134,7 +128,7 @@ pub mod event_contract {
             self.emit(EventRescheduled {id: _event_id, start_date: _start_date, end_date: _end_date});
         }
 
-        fn cancel_event (ref self: ContractState, _event_id: u32) -> {
+        fn cancel_event (ref self: ContractState, _event_id: u32) {
             let caller = get_caller_address();
             let _event_count = self.event_count.read();
 
@@ -160,7 +154,6 @@ pub mod event_contract {
             self.emit(EventCanceled {id: _event_id, is_canceled: event_instance.is_canceled})
         }
 
-
         // view functions
         fn get_event_count (self: @ContractState) -> u32 {
             self.event_count.read()
@@ -169,6 +162,5 @@ pub mod event_contract {
         fn get_event (self: @ContractState, _event_id: u32) -> Events {
             self.events.read(_event_id)
         }
-
     }
 }
