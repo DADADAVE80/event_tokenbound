@@ -3,8 +3,8 @@ use starknet::{ContractAddress};
 
 #[starknet::interface]
 pub trait IEvent<TContractState> {
-    fn create_event (ref self: TContractState, _theme: felt252, _organizer: ContractAddress, _event_type: felt252, _start_date: u256, _end_date: u256, _ticket_price: u256);
-    fn reschedule_event (ref self: TContractState, _event_id: u32, _start_date: u256, _end_date: u256);
+    fn create_event (ref self: TContractState, _theme: felt252, _organizer: ContractAddress, _event_type: felt252, _start_time: u256, _end_time: u256, _ticket_price: u256);
+    fn reschedule_event (ref self: TContractState, _event_id: u32, _start_time: u256, _end_time: u256);
     fn cancel_event (ref self : TContractState, _event_id: u32);
     // fn create_ticket (ref self : TContractState, event_id: u32) -> bool;
     // fn purchase_ticket (ref self : TContractState, event_id: u32) -> bool;
@@ -23,8 +23,8 @@ struct Events {
     total_tickets: u32,
     tickets_sold: u32,
     ticket_price: u256,
-    start_date: u256,
-    end_date: u256,
+    start_time: u256,
+    end_time: u256,
     is_canceled: bool,
 }
 
@@ -52,8 +52,8 @@ pub mod event_contract {
     #[derive(Drop, starknet::Event)]
     struct EventRescheduled {
         id: u32,
-        start_date: u256,
-        end_date: u256
+        start_time: u256,
+        end_time: u256
     }
 
     #[derive(Drop, starknet::Event)]
@@ -72,7 +72,7 @@ pub mod event_contract {
     // implementions and functions
     #[abi(embed_v0)]
     impl eventImpl of IEvent<ContractState>{
-        fn create_event (ref self: ContractState, _theme: felt252, _organizer: ContractAddress, _event_type: felt252, _start_date: u256, _end_date: u256, _ticket_price: u256) {
+        fn create_event (ref self: ContractState, _theme: felt252, _organizer: ContractAddress, _event_type: felt252, _start_time: u256, _end_time: u256, _ticket_price: u256) {
             let caller = get_caller_address();
             let _event_count = self.event_count.read() + 1;
 
@@ -90,8 +90,8 @@ pub mod event_contract {
                 total_tickets: 0,
                 tickets_sold: 0,
                 ticket_price: _ticket_price,
-                start_date: _start_date,
-                end_date: _end_date,
+                start_time: _start_time,
+                end_time: _end_time,
                 is_canceled: false
             };
 
@@ -105,7 +105,7 @@ pub mod event_contract {
             self.emit(EventCreated {id: _event_count, organizer: caller});
         }
 
-        fn reschedule_event (ref self: ContractState, _event_id: u32, _start_date: u256, _end_date: u256) {
+        fn reschedule_event (ref self: ContractState, _event_id: u32, _start_time: u256, _end_time: u256) {
             
             let caller = get_caller_address();
             let _event_count = self.event_count.read();
@@ -123,10 +123,10 @@ pub mod event_contract {
             let mut event_instance = self.events.read(_event_id);
 
             // reschedule event here
-            event_instance.start_date = _start_date;
-            event_instance.end_date = _end_date;
+            event_instance.start_time = _start_time;
+            event_instance.end_time = _end_time;
 
-            self.emit(EventRescheduled {id: _event_id, start_date: _start_date, end_date: _end_date});
+            self.emit(EventRescheduled {id: _event_id, start_time: _start_time, end_time: _end_time});
         }
 
         fn cancel_event (ref self: ContractState, _event_id: u32) {
@@ -146,7 +146,7 @@ pub mod event_contract {
             let mut event_instance = self.events.read(_event_id);
 
             // assert event has not ended
-            // assert(event_instance.end_date > 0, token_bound::errors::Errors::EVENT_ENDED)
+            // assert(event_instance.end_time > 0, token_bound::errors::Errors::EVENT_ENDED)
 
             // reschedule event here
             
