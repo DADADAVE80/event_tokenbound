@@ -1,7 +1,7 @@
-## CROWDPASS EVENT dApp
+# CROWDPASS
 
 ### OVERVIEW
-`Crowdpass` is decentralized Event management platform, `crowdpass` aids event organizers to create and manage events (cancel event, reschedule event), `crowdpass` also aids event attendees to purchase, sale and recliam tickets refund in the case of event cancellation.
+`Crowdpass` is a decentralized Event management platform, `crowdpass` aids event organizers to create and manage event ticketing, `crowdpass` also aids event attendees to purchase, sale and recliam tickets refund in the case of event cancellation.
 
 ### PROBLEM
 The event industry is plaqued with alot of inefficiencies some of which include; for organizers the ability to manage ticket sale is a nightmare this come from duplication of tickets by malicious actors, unaccountability of funds for ticket sales which can lead to capital and revenue loss, while for event attendees purchase of fake tickets and the most important insecurities regarding refunds for tickets funds on event cancelation.
