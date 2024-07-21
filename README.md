@@ -1,7 +1,7 @@
 # CROWDPASS
 
 ### OVERVIEW
-`Crowdpass` is a decentralized Event management platform, `crowdpass` aids event organizers to create and manage event ticketing, `crowdpass` also aids event attendees to purchase, sale and recliam tickets refund in the case of event cancellation.
+Crowdpass is a decentralized Event management platform, crowdpass aids event organizers to create and manage event ticketing, crowdpass also aids event attendees to purchase, sale and recliam tickets refund in the case of event cancellation.
 
 ### PROBLEM
 The event industry faces several significant inefficiencies that impact both organizers and attendees.
@@ -21,6 +21,9 @@ The event industry faces several significant inefficiencies that impact both org
 
 ### SOLUTION
 `Crowdpass` aims to fix all the above inefficiencies through creating tickets in form of nft's and minting these nft's to attendees that purchase the ticket for the said event, also with our recliam functionality event attendees can be able to cliam refunds for tickets on event cancellation.
+
+### TOKENBOUND SOLUTION
+with tickets in form of NFT's we can easily make all tickets tokenbound accounts, this will make tickets to be able to hold assets and give all rights / priviledges to the ticket holder. for example: incase where an event attendee decides to sale his tickets, and the event was canceled, the new owner of the nft will get the refund simply beacuse the refunds will be made to the nft 
 
 > [!IMPORTANT]
 > - Our smartcontract is an escrow contract, that handles all tickets (nft's) and funds from ticket purchase.
