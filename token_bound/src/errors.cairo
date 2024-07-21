@@ -5,4 +5,7 @@ pub mod Errors {
     pub const NOT_ORGANIZER: felt252 = 'Caller not organizer';
     pub const NOT_CREATED: felt252 = 'event not yet registered';
     pub const EVENT_ENDED: felt252 = 'event has ended';
+    pub const EVENT_NOT_CANCELED: felt252 = 'event not canceled';
+    pub const INSUFFICIENT_AMOUNT: felt252 = 'balance is low';
+    pub const LOW_TOKEN_ALLOWANCE: felt252 = 'token allowance too low';
 }
