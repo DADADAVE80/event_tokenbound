@@ -23,7 +23,7 @@ The event industry faces several significant inefficiencies that impact both org
 `Crowdpass` aims to fix all the above inefficiencies through creating tickets in form of nft's and minting these nft's to attendees that purchase the ticket for the said event, also with our recliam functionality event attendees can be able to cliam refunds for tickets on event cancellation.
 
 ### TOKENBOUND SOLUTION
-with tickets in form of NFT's we can easily make all tickets tokenbound accounts, this will make tickets to be able to hold assets and give all rights / priviledges to the ticket holder. for example: incase where an event attendee decides to sale his tickets, and the event was canceled, the new owner of the nft will get the refund simply beacuse the refunds will be made to the nft 
+with tickets in form of NFT's we can easily make all tickets tokenbound accounts, this will make tickets to be able to hold assets and give all rights / priviledges to the ticket holder. for example: incase where an event attendee decides to sale his tickets, and the event was canceled, the new owner of the nft will get the refund simply beacuse the refunds will be made to the ticket (tba). lastly all digital badges (POAP) for events will be minted to the ticket (tba) which will give the ticket holder the right to all priviledges attached to holding the ticket.
 
 > [!IMPORTANT]
 > - Our smartcontract is an escrow contract, that handles all tickets (nft's) and funds from ticket purchase.
