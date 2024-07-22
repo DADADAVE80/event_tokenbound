@@ -27,7 +27,7 @@ with tickets in form of NFT's we can easily make all tickets tokenbound accounts
 
 > [!IMPORTANT]
 > - Our smartcontract is an escrow contract, that handles all tickets (nft's) and funds from ticket purchase.
-> - Event organizers can monitor but can cliam funds from ticket sales until after event end_date and after 50% of attendees give reviews stating event was held.
+> - Event organizers can monitor but can't claim funds from ticket sales until after event end_date.
 > - All tickets are token_bound accounts this is to aid for easy sale from one party to another and maximum security, incase of event cancelation the funds for the ticket is been refunded back to the ticket (tba) and also in events with digital badges (POAP), this badges will be sent to the ticket (tba). This will aid the ticket holder have all priviledges associated with holding the ticket.
 
 ### FUNCTIONALITIES
