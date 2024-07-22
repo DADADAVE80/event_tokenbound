@@ -113,7 +113,7 @@ pub mod event_contract {
                 contract_address: self.ticket_factory_address.read()
             };
 
-            let _event_ticket_addr = ticket_factory.deploy_ticket(impl_hash, address_this, caller, address_this, address_this, _event_count.into());
+            let _event_ticket_addr = ticket_factory.deploy_ticket(impl_hash, caller, address_this, _event_count.into());
 
             // new event struct instance
             let event_instance = Events {
