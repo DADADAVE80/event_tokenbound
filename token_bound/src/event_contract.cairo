@@ -26,6 +26,7 @@ struct Events {
     start_date: u64,
     end_date: u64,
     is_canceled: bool,
+    event_ticket_addr: ContractAddress
 }
 
 #[starknet::contract]
@@ -36,6 +37,7 @@ pub mod event_contract {
     use core::num::traits::zero::Zero;
 
     use token_bound::erc20_interface::{ IERC20Dispatcher, IERC20DispatcherTrait};
+    use token_bound::ticket_factory::{ ITicketFactoryDispatcher, ITicketFactoryDispatcherTrait};
 
     // events
     #[event]
@@ -79,14 +81,17 @@ pub mod event_contract {
        event_count: u32,
        events: LegacyMap::<u32, Events>,
        token_address: ContractAddress,
+       ticket_factory_address: ContractAddress
     }
 
     #[constructor]
     fn constructor(
         ref self: ContractState,
         _token_address: ContractAddress,
+        _ticket_factory_address: ContractAddress
     ) {
         self.token_address.write(_token_address);
+        self.ticket_factory_address.write(_ticket_factory_address);
     }
 
     // implementions and functions
@@ -97,11 +102,18 @@ pub mod event_contract {
 
             let caller = get_caller_address();
             let _event_count = self.event_count.read() + 1;
+            let address_this = get_contract_address();
+            let impl_hash: felt252 = 0x5b23dcacfabd8491e035a209eb39480782564b64d00d04f2e00937ac12e9932;
 
             // assert not zero ContractAddress
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
 
             // deploy tickets contract here
+            let ticket_factory = ITicketFactoryDispatcher {
+                contract_address: self.ticket_factory_address.read()
+            };
+
+            let _event_ticket_addr = ticket_factory.deploy_ticket(impl_hash, address_this, caller, address_this, address_this, _event_count.into());
 
             // new event struct instance
             let event_instance = Events {
@@ -114,7 +126,8 @@ pub mod event_contract {
                 ticket_price: _ticket_price,
                 start_date: _start_date,
                 end_date: _end_date,
-                is_canceled: false
+                is_canceled: false,
+                event_ticket_addr: _event_ticket_addr
             };
 
             // map event_id to new_event
@@ -155,7 +168,8 @@ pub mod event_contract {
                 ticket_price: event_instance.ticket_price,
                 start_date: _start_date,
                 end_date: _end_date,
-                is_canceled: false
+                is_canceled: false,
+                event_ticket_addr: event_instance.event_ticket_addr
             });
 
 
@@ -190,7 +204,8 @@ pub mod event_contract {
                 ticket_price: event_instance.ticket_price,
                 start_date: event_instance.start_date,
                 end_date: event_instance.end_date,
-                is_canceled: true
+                is_canceled: true,
+                event_ticket_addr: event_instance.event_ticket_addr
             });
 
             self.emit(EventCanceled {id: _event_id, is_canceled: event_instance.is_canceled})
@@ -237,7 +252,8 @@ pub mod event_contract {
                 ticket_price: event_instance.ticket_price,
                 start_date: event_instance.start_date,
                 end_date: event_instance.end_date,
-                is_canceled: event_instance.is_canceled
+                is_canceled: event_instance.is_canceled,
+                event_ticket_addr: event_instance.event_ticket_addr
             });
 
             // emit event for ticket purchase
@@ -249,7 +265,7 @@ pub mod event_contract {
             
             let caller = get_caller_address();
             let _event_count = self.event_count.read();
-            let address_this = get_contract_address();
+            // let address_this = get_contract_address();
 
             let event_instance = self.events.read(_event_id);
 
