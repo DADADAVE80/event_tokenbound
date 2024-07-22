@@ -1,7 +1,7 @@
 use starknet::{ContractAddress};
 
 #[starknet::interface]
-pub trait IEvent<TContractState> {
+pub trait IEventContract<TContractState> {
     fn create_event(
         ref self: TContractState,
         _theme: felt252,
@@ -36,8 +36,8 @@ struct Events {
 }
 
 #[starknet::contract]
-pub mod event_contract {
-    use super::{Events, IEvent};
+pub mod EventContract {
+    use super::{Events, IEventContract};
     use starknet::{get_caller_address, ContractAddress, get_block_timestamp, get_contract_address};
     use core::num::traits::zero::Zero;
 
@@ -103,7 +103,7 @@ pub mod event_contract {
 
     // implementions and functions
     #[abi(embed_v0)]
-    impl eventImpl of IEvent<ContractState> {
+    impl EventContractImpl of IEventContract<ContractState> {
         fn create_event(
             ref self: ContractState,
             _theme: felt252,
@@ -154,7 +154,6 @@ pub mod event_contract {
             // emit event for event creation
             self.emit(EventCreated { id: _event_count, organizer: caller });
         }
-
 
         fn reschedule_event(
             ref self: ContractState, _event_id: u32, _start_date: u64, _end_date: u64
@@ -276,9 +275,7 @@ pub mod event_contract {
             // mint the nft ticket to the user
             let event_ticket_address = event_instance.event_ticket_addr;
 
-            let ticket_nft = IERC721Dispatcher{
-                contract_address: event_ticket_address
-            };
+            let ticket_nft = IERC721Dispatcher { contract_address: event_ticket_address };
 
             ticket_nft.mint(caller);
 
@@ -351,7 +348,5 @@ pub mod event_contract {
     }
 
     #[generate_trait]
-    impl Private of PrivateTrait {
-       
-    }
+    impl Private of PrivateTrait {}
 }
