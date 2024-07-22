@@ -45,6 +45,7 @@ mod TicketNFT {
         pausable: PausableComponent::Storage,
         #[substorage(v0)]
         accesscontrol: AccessControlComponent::Storage,
+        _next_token_id: u256,
     }
 
     #[event]
@@ -109,6 +110,16 @@ mod TicketNFT {
         }
 
         #[external(v0)]
+        fn _mint(
+            ref self: ContractState,
+            recipient: ContractAddress,
+            token_id: u256,
+        ) {
+            self.accesscontrol.assert_only_role(MINTER_ROLE);
+            self.erc721.mint(recipient, token_id);
+        }
+
+        #[external(v0)]
         fn safe_mint(
             ref self: ContractState,
             recipient: ContractAddress,
@@ -120,10 +131,12 @@ mod TicketNFT {
         }
 
         #[external(v0)]
-        fn safeMint(
-            ref self: ContractState, recipient: ContractAddress, tokenId: u256, data: Span<felt252>,
+        fn mint(
+            ref self: ContractState, recipient: ContractAddress, data: Span<felt252>,
         ) {
-            self.safe_mint(recipient, tokenId, data);
+            let tokenId = self._next_token_id.read();
+            self._mint(recipient, tokenId);
+            self._next_token_id.write(tokenId + 1);
         }
     }
 }
