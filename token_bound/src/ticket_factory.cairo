@@ -29,7 +29,7 @@ pub mod TicketFactory {
     }
 
     #[abi(embed_v0)]
-    impl ticket_factory of ITicketFactory<ContractState> {
+    impl TicketFactoryImpl of ITicketFactory<ContractState> {
         fn deploy_ticket(
             ref self: ContractState,
             implementation_hash: felt252,
