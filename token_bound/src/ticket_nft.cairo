@@ -3,28 +3,22 @@
 
 const PAUSER_ROLE: felt252 = selector!("PAUSER_ROLE");
 const MINTER_ROLE: felt252 = selector!("MINTER_ROLE");
-const UPGRADER_ROLE: felt252 = selector!("UPGRADER_ROLE");
 
 #[starknet::contract]
 mod TicketNFT {
     use core::num::traits::Zero;
     use openzeppelin::access::accesscontrol::AccessControlComponent;
-    use openzeppelin::access::accesscontrol::DEFAULT_ADMIN_ROLE;
     use openzeppelin::introspection::src5::SRC5Component;
     use openzeppelin::security::pausable::PausableComponent;
     use openzeppelin::token::erc721::ERC721Component;
-    use openzeppelin::upgrades::UpgradeableComponent;
-    use openzeppelin::upgrades::interface::IUpgradeable;
-    use starknet::ClassHash;
     use starknet::ContractAddress;
     use starknet::get_caller_address;
-    use super::{PAUSER_ROLE, MINTER_ROLE, UPGRADER_ROLE};
+    use super::{PAUSER_ROLE, MINTER_ROLE};
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
     component!(path: PausableComponent, storage: pausable, event: PausableEvent);
     component!(path: AccessControlComponent, storage: accesscontrol, event: AccessControlEvent);
-    component!(path: UpgradeableComponent, storage: upgradeable, event: UpgradeableEvent);
 
     #[abi(embed_v0)]
     impl ERC721MixinImpl = ERC721Component::ERC721MixinImpl<ContractState>;
@@ -40,7 +34,6 @@ mod TicketNFT {
     impl ERC721InternalImpl = ERC721Component::InternalImpl<ContractState>;
     impl PausableInternalImpl = PausableComponent::InternalImpl<ContractState>;
     impl AccessControlInternalImpl = AccessControlComponent::InternalImpl<ContractState>;
-    impl UpgradeableInternalImpl = UpgradeableComponent::InternalImpl<ContractState>;
 
     #[storage]
     struct Storage {
@@ -52,8 +45,6 @@ mod TicketNFT {
         pausable: PausableComponent::Storage,
         #[substorage(v0)]
         accesscontrol: AccessControlComponent::Storage,
-        #[substorage(v0)]
-        upgradeable: UpgradeableComponent::Storage,
     }
 
     #[event]
@@ -67,25 +58,15 @@ mod TicketNFT {
         PausableEvent: PausableComponent::Event,
         #[flat]
         AccessControlEvent: AccessControlComponent::Event,
-        #[flat]
-        UpgradeableEvent: UpgradeableComponent::Event,
     }
 
     #[constructor]
-    fn constructor(
-        ref self: ContractState,
-        default_admin: ContractAddress,
-        pauser: ContractAddress,
-        minter: ContractAddress,
-        upgrader: ContractAddress,
-    ) {
+    fn constructor(ref self: ContractState, pauser: ContractAddress, minter: ContractAddress,) {
         self.erc721.initializer("TicketNFT", "TKT", "");
         self.accesscontrol.initializer();
 
-        self.accesscontrol._grant_role(DEFAULT_ADMIN_ROLE, default_admin);
         self.accesscontrol._grant_role(PAUSER_ROLE, pauser);
         self.accesscontrol._grant_role(MINTER_ROLE, minter);
-        self.accesscontrol._grant_role(UPGRADER_ROLE, upgrader);
     }
 
     impl ERC721HooksImpl of ERC721Component::ERC721HooksTrait<ContractState> {
@@ -105,14 +86,6 @@ mod TicketNFT {
             token_id: u256,
             auth: ContractAddress,
         ) {}
-    }
-
-    #[abi(embed_v0)]
-    impl UpgradeableImpl of IUpgradeable<ContractState> {
-        fn upgrade(ref self: ContractState, new_class_hash: ClassHash) {
-            self.accesscontrol.assert_only_role(UPGRADER_ROLE);
-            self.upgradeable.upgrade(new_class_hash);
-        }
     }
 
     #[generate_trait]
