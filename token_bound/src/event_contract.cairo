@@ -103,7 +103,7 @@ pub mod event_contract {
             let caller = get_caller_address();
             let _event_count = self.event_count.read() + 1;
             let address_this = get_contract_address();
-            let impl_hash: felt252 = 0x5b23dcacfabd8491e035a209eb39480782564b64d00d04f2e00937ac12e9932;
+            let impl_hash: felt252 = 0x6832d60ac7a00d34feecbec2f5d45c6c851d58989abbec7d9757e1b42b50c37;
 
             // assert not zero ContractAddress
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
@@ -113,7 +113,7 @@ pub mod event_contract {
                 contract_address: self.ticket_factory_address.read()
             };
 
-            let _event_ticket_addr = ticket_factory.deploy_ticket(impl_hash, caller, address_this, _event_count.into());
+            let _event_ticket_addr = ticket_factory.deploy_ticket(impl_hash, caller, address_this, 0);
 
             // new event struct instance
             let event_instance = Events {

@@ -61,7 +61,7 @@ mod TicketNFT {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, pauser: ContractAddress, minter: ContractAddress,) {
+    fn constructor(ref self: ContractState, pauser: ContractAddress, minter: ContractAddress) {
         self.erc721.initializer("TicketNFT", "TKT", "");
         self.accesscontrol.initializer();
 
