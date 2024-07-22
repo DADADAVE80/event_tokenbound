@@ -31,3 +31,41 @@ export const updateData = [
         caption: "Events made easy"
     }
 ]
+
+export const HiwAccordionData = [
+    {
+        icon: "/assets/decentralized-identity.png",
+        title: "Create and verify your identity",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    }, {
+        icon: "/assets/decentralized-identity.png",
+        title: "Create and verify your identity",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    }, {
+        icon: "/assets/decentralized-identity.png",
+        title: "Create and verify your identity",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    }, {
+        icon: "/assets/decentralized-identity.png",
+        title: "Create and verify your identity",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    },]
+
+export const FaqAccordionData = [
+    {
+        title: "Lorem ipsum dolor sit amet, consectetur.",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    }, {
+        title: "Lorem ipsum dolor sit amet, consectetur.",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    }, {
+        title: "Lorem ipsum dolor sit amet, consectetur.",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    }, {
+        title: "Lorem ipsum dolor sit amet, consectetur.",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    }, {
+        title: "Lorem ipsum dolor sit amet, consectetur.",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+    },
+]

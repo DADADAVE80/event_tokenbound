@@ -4,7 +4,7 @@ import { Button } from '../../shared/button'
 
 const HeroSection = () => {
     return (
-        <div className='bg-hero-image w-screen h-screen bg-cover'>
+        <div className='bg-hero-image w-screen h-[calc(100vh-80px)] bg-cover'>
             <div className='bg-gray-950/90 z-10 w-full h-full '>
                 <div className='z-20 px-[2.5%] flex flex-col items-center py-10 lg:px-[5%] gap-10 w-full h-full '>
                     <Header />

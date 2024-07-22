@@ -1,21 +1,38 @@
 import React from 'react'
 import { updateData } from '../../dummy-data'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 const UpdateSection = () => {
 
+    const settings = {
+        dots: false,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        speed: 2000,
+        autoplaySpeed: 2000,
+        cssEase: "linear",
+        arrows: false,
+    };
+
     const content = updateData.map(({ caption }, index) => {
         return (
-            <div className='flex gap-12 justify-center items-center' key={index}>
+            <div  key={index}>
+                 <div className='flex gap-12 justify-center items-center'>
                 <img src='/assets/scroling-star.png' />
                 <h1 className='text-white font-semibold text-3xl 2xl:text-5xl'>{caption}</h1>
+            </div>
             </div>
         )
     })
     return (
-        <div className='bg-deep-blue h-20 flex gap-8 justify-center items-center -skew-y-1 overflow-y-hidden'>
-            {content}
-        </div>
+            <Slider {...settings} className='z-10 bg-deep-blue h-20 flex justify-center items-center overflow-y-hidden slider-container'>
+                {content}
+            </Slider>
     )
 }
 
-export default UpdateSection
+export default UpdateSection;
