@@ -7,7 +7,8 @@ import { FaCompass, FaFolderOpen } from 'react-icons/fa'
 import { IoIosSettings, IoMdAnalytics } from 'react-icons/io'
 
 const Sidebar = () => {
-     const eventMainSidebarData = [
+
+    const eventMainSidebarData = [
         {
             url: "/dashboard",
             icon: <TiHome className="w-6 h-6" />,
@@ -35,6 +36,7 @@ const Sidebar = () => {
             title: "Settings"
         }, 
     ]
+
     return (
         <div className="hidden h-screen w-64 md:block fixed bg-deep-blue ">
             <div className='flex flex-col py-16 justify-between h-screen'>

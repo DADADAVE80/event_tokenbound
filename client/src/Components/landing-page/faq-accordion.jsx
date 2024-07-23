@@ -1,8 +1,27 @@
-import { FaqAccordionData } from '../dummy-data'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../shared/accordion'
 import React from 'react'
 
 const FaqAccordion = () => {
+
+    const FaqAccordionData = [
+        {
+            title: "Lorem ipsum dolor sit amet, consectetur.",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+        }, {
+            title: "Lorem ipsum dolor sit amet, consectetur.",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+        }, {
+            title: "Lorem ipsum dolor sit amet, consectetur.",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+        }, {
+            title: "Lorem ipsum dolor sit amet, consectetur.",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+        }, {
+            title: "Lorem ipsum dolor sit amet, consectetur.",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+        },
+    ]
+    
     return (
         <Accordion type="single" collapsible className="w-[500px] flex flex-col gap-6">
             {
