@@ -2,6 +2,7 @@ import React from 'react'
 import HiwAccordion from '../hiw-accordion'
 
 const HiwSection = () => {
+    
     return (
         <div className='bg-base-white flex flex-col justify-center items-center'>
             <div className='flex flex-col justify-center items-center max-w-[1280px]'>

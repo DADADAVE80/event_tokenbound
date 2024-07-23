@@ -2,9 +2,17 @@ import React from 'react'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { updateData } from '../../dummy-data';
 
 const UpdateSection = () => {
+    const updateData = [
+        {
+            caption: "Create Event"
+        },  {
+            caption: "HostIT"
+        },  {
+            caption: "Events made easy"
+        }
+    ]
 
     const settings = {
         dots: false,

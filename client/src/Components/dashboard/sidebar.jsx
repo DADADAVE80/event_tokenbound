@@ -1,10 +1,42 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import SidebarItem from './sidebar-item'
-import { IoLogOutSharp } from 'react-icons/io5'
-import { eventMainSidebarData } from '../dummy-data'
+import { IoLogOutSharp, IoTicket } from 'react-icons/io5'
+import { TiHome } from 'react-icons/ti'
+import { FaCompass, FaFolderOpen } from 'react-icons/fa'
+import { IoIosSettings, IoMdAnalytics } from 'react-icons/io'
 
 const Sidebar = () => {
+
+    const eventMainSidebarData = [
+        {
+            url: "/dashboard",
+            icon: <TiHome className="w-6 h-6" />,
+            title: "Dashboard"
+        }, {
+            url: "/events",
+            icon: <FaFolderOpen className="w-6 h-6" />,
+            title: "Events"
+        },
+        {
+            url: "/analytics",
+            icon: <IoMdAnalytics className="w-6 h-6" />,
+            title: "Analytics"
+        },{
+            url: "/tickets",
+            icon: <IoTicket className="w-6 h-6" />,
+            title: "Tickets"
+        }, {
+            url: "/discover",
+            icon: <FaCompass className="w-6 h-6" />,
+            title: "Discover"
+        }, {
+            url: "/settings",
+            icon: <IoIosSettings className="w-6 h-6" />,
+            title: "Settings"
+        }, 
+    ]
+
     return (
         <div className="hidden h-screen w-64 md:block fixed bg-deep-blue ">
             <div className='flex flex-col py-16 justify-between h-screen'>
