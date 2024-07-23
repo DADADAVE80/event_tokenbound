@@ -26,8 +26,8 @@ struct Events {
     theme: felt252,
     organizer: ContractAddress,
     event_type: felt252,
-    total_tickets: u32,
-    tickets_sold: u32,
+    total_tickets: u256,
+    tickets_sold: u256,
     ticket_price: u256,
     start_date: u64,
     end_date: u64,
@@ -37,13 +37,18 @@ struct Events {
 
 #[starknet::contract]
 pub mod EventContract {
-    use super::{Events, IEventContract};
+    use core::traits::TryInto;
+use core::traits::Into;
+use super::{Events, IEventContract};
     use starknet::{get_caller_address, ContractAddress, get_block_timestamp, get_contract_address};
     use core::num::traits::zero::Zero;
 
-    use token_bound::erc20_interface::{IERC20Dispatcher, IERC20DispatcherTrait};
-    use token_bound::erc721_interface::{IERC721Dispatcher, IERC721DispatcherTrait};
-    use token_bound::ticket_factory::{ITicketFactoryDispatcher, ITicketFactoryDispatcherTrait};
+    use token_bound::{
+        erc20_interface::{IERC20Dispatcher, IERC20DispatcherTrait},
+        erc721_interface::{IERC721Dispatcher, IERC721DispatcherTrait},
+        ticket_factory::{ITicketFactoryDispatcher, ITicketFactoryDispatcherTrait},
+        tba_registry_interface::{IRegistryDispatcher, IRegistryDispatcherTrait}
+    };
 
     // events
     #[event]
@@ -52,7 +57,8 @@ pub mod EventContract {
         EventCreated: EventCreated,
         EventRescheduled: EventRescheduled,
         EventCanceled: EventCanceled,
-        TicketPurchased: TicketPurchased
+        TicketPurchased: TicketPurchased,
+        TicketRecliamed: TicketRecliamed
     }
 
     #[derive(Drop, starknet::Event)]
@@ -81,6 +87,13 @@ pub mod EventContract {
         amount: u256
     }
 
+    #[derive(Drop, starknet::Event)]
+    struct TicketRecliamed {
+        event_id: u32,
+        tba_acct: ContractAddress,
+        amount: u256
+    }
+
     // storage
     #[storage]
     struct Storage {
@@ -88,17 +101,22 @@ pub mod EventContract {
         events: LegacyMap::<u32, Events>,
         token_address: ContractAddress,
         ticket_factory_address: ContractAddress,
+        tba_address: ContractAddress,
         event_ticket_count: LegacyMap::<ContractAddress, u256>,
+        user_event_token_id: LegacyMap::<(u32, ContractAddress), u256>,
+        user_has_cliam_refund: LegacyMap::<(u32, ContractAddress), bool>
     }
 
     #[constructor]
     fn constructor(
         ref self: ContractState,
         _token_address: ContractAddress,
-        _ticket_factory_address: ContractAddress
+        _ticket_factory_address: ContractAddress,
+        _tba_address: ContractAddress
     ) {
         self.token_address.write(_token_address);
         self.ticket_factory_address.write(_ticket_factory_address);
+        self.tba_address.write(_tba_address);
     }
 
     // implementions and functions
@@ -117,7 +135,7 @@ pub mod EventContract {
             let _event_count = self.event_count.read() + 1;
             let address_this = get_contract_address();
             let impl_hash: felt252 =
-                0x6832d60ac7a00d34feecbec2f5d45c6c851d58989abbec7d9757e1b42b50c37;
+            0x380b1261c4227547f0a642b87726296361f34ddeb02122cc2029cee82bfe532;
 
             // assert not zero ContractAddress
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
@@ -279,6 +297,9 @@ pub mod EventContract {
 
             ticket_nft.mint(caller);
 
+            // update legacymap with user token_id
+            self.user_event_token_id.write((_event_id, caller), event_instance.tickets_sold);
+
             // increase ticket_sold count from event instance
             self
                 .events
@@ -315,9 +336,17 @@ pub mod EventContract {
 
             let event_instance = self.events.read(_event_id);
 
-            // let strk_erc20_contract = IERC20Dispatcher {
-            //     contract_address: self.token_address.read()
-            // };
+            let strk_erc20_contract = IERC20Dispatcher {
+                contract_address: self.token_address.read()
+            };
+
+            let impl_hash: felt252 = 0x45d67b8590561c9b54e14dd309c9f38c4e2c554dd59414021f9d079811621bd;
+
+            let ticket_nft = IERC721Dispatcher { contract_address: event_instance.event_ticket_addr };
+
+            let tba_contract = IRegistryDispatcher { contract_address: self.tba_address.read()};
+
+            let user_token_id = self.user_event_token_id.read((_event_id, event_instance.event_ticket_addr));
 
             // assert caler is not addr 0
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
@@ -329,12 +358,30 @@ pub mod EventContract {
             assert(
                 event_instance.is_canceled == true, token_bound::errors::Errors::EVENT_NOT_CANCELED
             );
-        // confirm if caller is a ticket holder
+            
+            // confirm if caller is a ticket holder
+            assert(ticket_nft.balance_of(caller) > 0, token_bound::errors::Errors::NOT_TICKET_HOLDER);
 
-        // confirm if user has been refunded
+            // confirm if caller is the nft owner
+            assert(ticket_nft.owner_of(user_token_id) == caller, token_bound::errors::Errors::NOT_TICKET_HOLDER);
 
-        // 
+            // get users tba account
+            let tba_acct = tba_contract.get_account(impl_hash, event_instance.event_ticket_addr, user_token_id, 300000);
 
+            // confirm if user has been refunded
+            assert(self.user_has_cliam_refund.read((_event_id, tba_acct)) == false, token_bound::errors::Errors::REFUND_CLIAMED); 
+
+            // refund user
+            strk_erc20_contract.transfer(tba_acct, event_instance.ticket_price);
+            
+            // update the refund map
+            self.user_has_cliam_refund.write((_event_id, tba_acct), true);
+
+            // emit the event for ticket recliam
+            self
+            .emit(
+                TicketRecliamed { event_id: _event_id, tba_acct: tba_acct, amount: event_instance.ticket_price }
+            );
         }
 
         // view functions
