@@ -110,11 +110,7 @@ pub mod TicketNFT {
         }
 
         #[external(v0)]
-        fn _mint(
-            ref self: ContractState,
-            recipient: ContractAddress,
-            token_id: u256,
-        ) {
+        fn _mint(ref self: ContractState, recipient: ContractAddress, token_id: u256,) {
             self.accesscontrol.assert_only_role(MINTER_ROLE);
             self.erc721.mint(recipient, token_id);
         }
@@ -131,12 +127,13 @@ pub mod TicketNFT {
         }
 
         #[external(v0)]
-        fn mint(
-            ref self: ContractState, recipient: ContractAddress, data: Span<felt252>,
-        ) {
-            let tokenId = self._next_token_id.read();
+        fn mint_ticket_nft(ref self: ContractState, recipient: ContractAddress) {
+            let balance = self.erc721.balance_of(recipient);
+            assert(balance.is_zero(), token_bound::errors::Errors::ALREADY_MINTED);
+            
+            let tokenId = self._next_token_id.read() + 1;
             self._mint(recipient, tokenId);
-            self._next_token_id.write(tokenId + 1);
+            self._next_token_id.write(tokenId);
         }
     }
 }
