@@ -4,6 +4,7 @@ import AboutSection from '../../Components/landing-page/sections/about-section'
 import FeaturesSection from '../../Components/landing-page/sections/features-section'
 import UpdateSection from '../../Components/landing-page/sections/update-section'
 import HiwSection from '../../Components/landing-page/sections/hiw-section'
+import FaqSection from '../../Components/landing-page/sections/faq-section'
 
 const LandingPage = () => {
   return (
@@ -13,6 +14,7 @@ const LandingPage = () => {
         <AboutSection />
         <FeaturesSection />
         <HiwSection />
+        <FaqSection />
     </div>
   )
 }
