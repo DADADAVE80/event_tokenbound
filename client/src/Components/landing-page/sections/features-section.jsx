@@ -1,6 +1,6 @@
 import React from 'react'
 import FeaturesCard from '../features-card'
-import {featuresData} from "../../dummy-data"
+import { featuresData } from '../../dummy-data'
 
 const FeaturesSection = () => {
 

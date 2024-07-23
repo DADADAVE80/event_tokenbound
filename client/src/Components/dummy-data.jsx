@@ -74,3 +74,32 @@ export const FaqAccordionData = [
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
     },
 ]
+
+export const eventMainSidebarData = [
+    {
+        url: "/dashboard",
+        icon: <TiHome className="w-6 h-6" />,
+        title: "Dashboard"
+    }, {
+        url: "/events",
+        icon: <FaFolderOpen className="w-6 h-6" />,
+        title: "Events"
+    },
+    {
+        url: "/analytics",
+        icon: <IoMdAnalytics className="w-6 h-6" />,
+        title: "Analytics"
+    },{
+        url: "/tickets",
+        icon: <IoTicket className="w-6 h-6" />,
+        title: "Tickets"
+    }, {
+        url: "/discover",
+        icon: <FaCompass className="w-6 h-6" />,
+        title: "Discover"
+    }, {
+        url: "/settings",
+        icon: <IoIosSettings className="w-6 h-6" />,
+        title: "Settings"
+    }, 
+]
