@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <div className='flex items-center justify-between mb-4'>
       <div className='flex gap-6'>
-        <input type='text' placeholder="search" className='p-2 h-11 w-80 text-base-white border-none rounded-lg'/>
+        <input type='text' placeholder="Search" className='p-2 h-11 w-80 text-base-white border-none rounded-lg'/>
         <div className='p-2.5 bg-deep-blue rounded-full'>
           <IoFilter size={25} className='text-primary'/>
         </div>

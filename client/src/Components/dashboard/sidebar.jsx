@@ -38,8 +38,8 @@ const Sidebar = () => {
     ]
 
     return (
-        <div className="hidden h-screen w-64 md:block fixed bg-deep-blue ">
-            <div className='flex flex-col py-16 justify-between h-screen'>
+        <div className="hidden h-screen w-64 md:block fixed bg-deep-blue">
+            <div className='flex flex-col py-2 2xl:py-6 justify-between h-screen'>
                 <div className='flex flex-col gap-10'>
                     <div className="my-2 mx-6 flex items-center">
                         <Link to="/" className="flex items-center">
@@ -53,7 +53,7 @@ const Sidebar = () => {
                     </div>
                 </div>
                 <div className='flex flex-col gap-8 mx-3'>
-                    <hr className='h-[1px] text-primary w-56' />
+                    <hr className='h-[2px] bg-primary w-56' />
                     <div className='flex gap-3'>
                         <img src='/assets/profile-picture.png' alt='profile-picture' width={71} height={63} />
                         <div className='flex flex-col gap-2 justify-center'>
