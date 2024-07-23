@@ -25,5 +25,5 @@ pub trait IERC721<TContractState> {
     fn name(self: @TContractState) -> felt252;
     fn symbol(self: @TContractState) -> felt252;
     fn token_uri(self: @TContractState, token_id: u256) -> felt252;
-    fn mint(ref self: TContractState, recipient: ContractAddress);
+    fn mint_ticket_nft(ref self: TContractState, recipient: ContractAddress);
 }

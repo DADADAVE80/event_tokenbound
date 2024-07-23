@@ -38,8 +38,8 @@ struct Events {
 #[starknet::contract]
 pub mod EventContract {
     use core::traits::TryInto;
-use core::traits::Into;
-use super::{Events, IEventContract};
+    use core::traits::Into;
+    use super::{Events, IEventContract};
     use starknet::{get_caller_address, ContractAddress, get_block_timestamp, get_contract_address};
     use core::num::traits::zero::Zero;
 
@@ -134,8 +134,8 @@ use super::{Events, IEventContract};
             let caller = get_caller_address();
             let _event_count = self.event_count.read() + 1;
             let address_this = get_contract_address();
-            let impl_hash: felt252 =
-            0x380b1261c4227547f0a642b87726296361f34ddeb02122cc2029cee82bfe532;
+            let ticket_impl_hash: felt252 =
+                0x380b1261c4227547f0a642b87726296361f34ddeb02122cc2029cee82bfe532;
 
             // assert not zero ContractAddress
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
@@ -146,7 +146,7 @@ use super::{Events, IEventContract};
             };
 
             let _event_ticket_addr = ticket_factory
-                .deploy_ticket(impl_hash, caller, address_this, 0);
+                .deploy_ticket(ticket_impl_hash, caller, address_this, _event_count.into());
 
             // new event struct instance
             let event_instance = Events {
@@ -295,7 +295,7 @@ use super::{Events, IEventContract};
 
             let ticket_nft = IERC721Dispatcher { contract_address: event_ticket_address };
 
-            ticket_nft.mint(caller);
+            ticket_nft.mint_ticket_nft(caller);
 
             // update legacymap with user token_id
             self.user_event_token_id.write((_event_id, caller), event_instance.tickets_sold);
@@ -340,13 +340,18 @@ use super::{Events, IEventContract};
                 contract_address: self.token_address.read()
             };
 
-            let impl_hash: felt252 = 0x45d67b8590561c9b54e14dd309c9f38c4e2c554dd59414021f9d079811621bd;
+            let acct_impl_hash: felt252 =
+                0x45d67b8590561c9b54e14dd309c9f38c4e2c554dd59414021f9d079811621bd;
 
-            let ticket_nft = IERC721Dispatcher { contract_address: event_instance.event_ticket_addr };
+            let ticket_nft = IERC721Dispatcher {
+                contract_address: event_instance.event_ticket_addr
+            };
 
-            let tba_contract = IRegistryDispatcher { contract_address: self.tba_address.read()};
+            let tba_contract = IRegistryDispatcher { contract_address: self.tba_address.read() };
 
-            let user_token_id = self.user_event_token_id.read((_event_id, event_instance.event_ticket_addr));
+            let user_token_id = self
+                .user_event_token_id
+                .read((_event_id, event_instance.event_ticket_addr));
 
             // assert caler is not addr 0
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
@@ -358,30 +363,43 @@ use super::{Events, IEventContract};
             assert(
                 event_instance.is_canceled == true, token_bound::errors::Errors::EVENT_NOT_CANCELED
             );
-            
+
             // confirm if caller is a ticket holder
-            assert(ticket_nft.balance_of(caller) > 0, token_bound::errors::Errors::NOT_TICKET_HOLDER);
+            assert(
+                ticket_nft.balance_of(caller) > 0, token_bound::errors::Errors::NOT_TICKET_HOLDER
+            );
 
             // confirm if caller is the nft owner
-            assert(ticket_nft.owner_of(user_token_id) == caller, token_bound::errors::Errors::NOT_TICKET_HOLDER);
+            assert(
+                ticket_nft.owner_of(user_token_id) == caller,
+                token_bound::errors::Errors::NOT_TICKET_HOLDER
+            );
 
             // get users tba account
-            let tba_acct = tba_contract.get_account(impl_hash, event_instance.event_ticket_addr, user_token_id, 300000);
+            let tba_acct = tba_contract
+                .get_account(
+                    acct_impl_hash, event_instance.event_ticket_addr, user_token_id, 300000
+                );
 
             // confirm if user has been refunded
-            assert(self.user_has_cliam_refund.read((_event_id, tba_acct)) == false, token_bound::errors::Errors::REFUND_CLIAMED); 
+            assert(
+                self.user_has_cliam_refund.read((_event_id, tba_acct)) == false,
+                token_bound::errors::Errors::REFUND_CLIAMED
+            );
 
             // refund user
             strk_erc20_contract.transfer(tba_acct, event_instance.ticket_price);
-            
+
             // update the refund map
             self.user_has_cliam_refund.write((_event_id, tba_acct), true);
 
             // emit the event for ticket recliam
             self
-            .emit(
-                TicketRecliamed { event_id: _event_id, tba_acct: tba_acct, amount: event_instance.ticket_price }
-            );
+                .emit(
+                    TicketRecliamed {
+                        event_id: _event_id, tba_acct: tba_acct, amount: event_instance.ticket_price
+                    }
+                );
         }
 
         // view functions
