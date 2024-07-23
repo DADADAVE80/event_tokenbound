@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../shared/card'
+import { Card } from '../shared/card'
 
 
 const FeaturesCard = ({ icon, title, description }) => {

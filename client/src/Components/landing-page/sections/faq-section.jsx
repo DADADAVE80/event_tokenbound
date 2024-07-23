@@ -4,7 +4,7 @@ import FaqAccordion from '../faq-accordion'
 
 const FaqSection = () => {
     return (
-        <div className='bg-base-white flex flex-col justify-center items-center py-6'>
+        <div className='bg-white flex flex-col justify-center items-center py-6 my-10'>
             <div className='flex justify-center items-center max-w-[1280px] gap-8'>        
                 <PartnersCard />
                 <div className='flex flex-col gap-4'>
