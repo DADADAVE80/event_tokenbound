@@ -26,14 +26,14 @@ const UpcomingSection = () => {
             <div className='flex justify-center items-center gap-4'>
                 <img src="/assets/left-arrow.png" />
                 <div className='max-w-[1280px]'>
-                    <div className='bg-deep-blue rounded-lg flex gap-12 p-20'>
-                        <img src="/assets/web3lagos-conference.png" alt="web3-lagos" />
-                        <div className='flex flex-col justify-between mb-6'>
+                    <div className='bg-deep-blue rounded-lg flex gap-12 py-10 px-20 2xl:p-20 '>
+                        <img src="/assets/web3lagos-conference.png" alt="web3-lagos" className='h-[350px] w-[420px] 2xl:h-[490px] 2xl:w-[566px]'/>
+                        <div className='flex flex-col justify-between'>
                             <div className='flex flex-col'>
                                 <p className='text-lg text-base-white'>Africa’s largest blockchain gathering</p>
                                 <h1 className='text-3xl text-primary'>Web3 Lagos Conference</h1>
                             </div>
-                            <div className='flex flex-col gap-4'>
+                            <div className='flex flex-col gap-4 mb-6'>
                                 <p className='text-base-white text-2xl font-medium'>Event starts in</p>
                                 <div className='flex gap-8 justify-between items-center'>
                                     <div className='flex flex-col'>
