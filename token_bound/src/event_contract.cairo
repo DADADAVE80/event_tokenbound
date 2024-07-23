@@ -10,7 +10,7 @@ pub trait IEventContract<TContractState> {
         _start_date: u64,
         _end_date: u64,
         _ticket_price: u256
-    );
+    ) -> bool;
     fn reschedule_event(ref self: TContractState, _event_id: u32, _start_date: u64, _end_date: u64);
     fn cancel_event(ref self: TContractState, _event_id: u32);
     fn purchase_ticket(ref self: TContractState, _event_id: u32);
@@ -21,7 +21,7 @@ pub trait IEventContract<TContractState> {
 }
 
 #[derive(Drop, Serde, starknet::Store)]
-struct Events {
+pub struct Events {
     id: u32,
     theme: felt252,
     organizer: ContractAddress,
@@ -37,11 +37,9 @@ struct Events {
 
 #[starknet::contract]
 pub mod EventContract {
-    use core::traits::TryInto;
-    use core::traits::Into;
+    use core::{traits::{TryInto, Into}, num::traits::zero::Zero};
     use super::{Events, IEventContract};
     use starknet::{get_caller_address, ContractAddress, get_block_timestamp, get_contract_address};
-    use core::num::traits::zero::Zero;
 
     use token_bound::{
         erc20_interface::{IERC20Dispatcher, IERC20DispatcherTrait},
@@ -130,7 +128,7 @@ pub mod EventContract {
             _start_date: u64,
             _end_date: u64,
             _ticket_price: u256
-        ) {
+        ) -> bool {
             let caller = get_caller_address();
             let _event_count = self.event_count.read() + 1;
             let address_this = get_contract_address();
@@ -151,7 +149,7 @@ pub mod EventContract {
             // new event struct instance
             let event_instance = Events {
                 id: _event_count,
-                theme: _theme,
+                theme: _theme.into(),
                 organizer: caller,
                 event_type: _event_type,
                 total_tickets: 0,
@@ -171,6 +169,8 @@ pub mod EventContract {
 
             // emit event for event creation
             self.emit(EventCreated { id: _event_count, organizer: caller });
+
+            true
         }
 
         fn reschedule_event(
