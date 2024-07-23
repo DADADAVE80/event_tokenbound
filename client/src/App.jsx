@@ -8,6 +8,7 @@ import Discover from './pages/dashboard/discover'
 import Events from './pages/dashboard/events'
 import Settings from './pages/dashboard/settings'
 import Tickets from './pages/dashboard/tickets'
+import EventDetails from './pages/dashboard/event-details'
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
       <Route path="/analytics" element={<Analytics />} />
       <Route path="/discover" element={<Discover />} />
       <Route path="/events" element={<Events />} />
-      <Route path="/events/:id" element={<Events />} />
+      <Route path="/events/:id" element={<EventDetails />} />
 
       <Route path="/settings" element={<Settings />} />
       <Route path="/tickets" element={<Tickets />} />

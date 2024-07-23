@@ -1,3 +1,8 @@
+import { FaCompass, FaFolderOpen } from "react-icons/fa"
+import { IoIosSettings, IoMdAnalytics } from "react-icons/io"
+import { IoTicket } from "react-icons/io5"
+import { TiHome } from "react-icons/ti"
+
 export const featuresData = [
     {
         icon: "/assets/event-management.png",
@@ -68,4 +73,33 @@ export const FaqAccordionData = [
         title: "Lorem ipsum dolor sit amet, consectetur.",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
     },
+]
+
+export const eventMainSidebarData = [
+    {
+        url: "/dashboard",
+        icon: <TiHome className="w-6 h-6" />,
+        title: "Dashboard"
+    }, {
+        url: "/events",
+        icon: <FaFolderOpen className="w-6 h-6" />,
+        title: "Events"
+    },
+    {
+        url: "/anlytics",
+        icon: <IoMdAnalytics className="w-6 h-6" />,
+        title: "Analytics"
+    },{
+        url: "/tickets",
+        icon: <IoTicket className="w-6 h-6" />,
+        title: "Tickets"
+    }, {
+        url: "/discover",
+        icon: <FaCompass className="w-6 h-6" />,
+        title: "Discover"
+    }, {
+        url: "/settings",
+        icon: <IoIosSettings className="w-6 h-6" />,
+        title: "Settings"
+    }, 
 ]
