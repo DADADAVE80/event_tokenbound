@@ -9,6 +9,7 @@ pub mod Errors {
     pub const INSUFFICIENT_AMOUNT: felt252 = 'balance is low';
     pub const LOW_TOKEN_ALLOWANCE: felt252 = 'token allowance too low';
     pub const NOT_TICKET_HOLDER: felt252 = 'balance_of less than 1';
+    pub const NOT_TICKET_OWNER: felt252 = 'not ticket owner';
     pub const ALREADY_MINTED: felt252 = 'recipient already has a ticket';
     pub const REFUND_CLIAMED: felt252 = 'refund cliamed';
 }
