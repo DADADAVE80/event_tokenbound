@@ -20,7 +20,7 @@ const Events = () => {
     });
 
 
-console.log(data.toString())
+// console.log(data.toString())
     return (
         <Layout>
             <div>
@@ -35,7 +35,7 @@ console.log(data.toString())
                     </Link>
                 </div>
             </div>
-            <div>Events_count: {data.toString()} </div>
+            <div>Events_count:{data && data.toString()} </div>
 
         </Layout>
     )
