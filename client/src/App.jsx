@@ -15,6 +15,7 @@ import { useConnect, useDisconnect } from "@starknet-react/core";
 import { useAccount } from "@starknet-react/core";
 import CreateEvent from './pages/dashboard/create-event'
 import { useContract } from "@starknet-react/core";
+import { Contract } from 'starknet'
 import eventAbi from './Abis/eventAbi.json'
 
 const App = () => {
@@ -23,11 +24,13 @@ const App = () => {
   const { connect, connectors } = useConnect();
   const { account, address, status} = useAccount();
   const { disconnect } = useDisconnect();
-  const { contract } = useContract({ abi: eventAbi, address: contractAddr })
+  const { contract } = useContract({ abi: eventAbi, address: contractAddr, provider: account})
+
+  const eventContract = new Contract(eventAbi, contractAddr, account)
 
   return (
     <StarknetProvider>
-      <KitContext.Provider value={{connect, disconnect, connectors, address, account, contract, contractAddr, eventAbi}}>
+      <KitContext.Provider value={{connect, disconnect, connectors, address, account, contract, contractAddr, eventAbi, eventContract}}>
       <Routes>
         <Route path="/" element={status == 'disconnected' ? <LandingPage /> : <Dashboard />} />
         <Route path="/dashboard" element={status == 'disconnected' ? <LandingPage /> : <Dashboard />} />
