@@ -115,7 +115,11 @@
               "type": "core::integer::u256"
             }
           ],
-          "outputs": [],
+          "outputs": [
+            {
+              "type": "core::bool"
+            }
+          ],
           "state_mutability": "external"
         },
         {
