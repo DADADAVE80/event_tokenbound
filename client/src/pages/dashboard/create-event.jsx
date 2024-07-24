@@ -1,9 +1,46 @@
-import React from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../Components/shared/card'
 import { Button } from '../../Components/shared/button'
 import Layout from '../../Components/dashboard/layout'
+import {ethers} from 'ethers'
+import { KitContext } from '../../context/kit-context'
+
 
 const CreateEvent = () => {
+    const {eventContract} = useContext(KitContext)
+
+    const [formData, setFormData] = useState({
+        theme: '',
+        organizer: '',
+        type: '',
+        startTime: '',
+        endTime: '',
+        ticketPrice: ''
+    })
+    
+    const inputChange = (e) => {
+        setFormData((prevState) => ({
+            ...prevState, [e.target.name]: e.target.value
+        }))
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        const _start_date = new Date(formData.startTime).getTime() / 1000;
+        const _end_date = new Date(formData.endTime).getTime() / 1000;
+        
+        try {
+           
+            await eventContract.create_event(formData.theme, formData.organizer, formData.type, _start_date, _end_date, formData.ticketPrice)
+            alert('succesfully added')
+            
+        } catch (error) {
+            alert(error.message)
+            console.log(error)
+        }
+    }
+
     return (
         <Layout>
             <div className='w-full mt-20 flex justify-center items-center'>
@@ -16,42 +53,72 @@ const CreateEvent = () => {
                         <div className="grid grid-cols-2 gap-6">
                             <div className="space-y-2 flex flex-col">
                                 <label htmlFor="theme" className="text-deep-blue">Event Name</label>
-                                <input id="theme" placeholder="Input event name" type='text' />
+                                <input 
+                                    id="theme" placeholder="Input event name" type='text' 
+                                    name='theme'
+                                    value={formData.theme}
+                                    onChange={inputChange}
+                                />
                             </div>
                             <div className="space-y-2 flex flex-col">
                                 <label htmlFor="organizer" className="text-deep-blue">Organizer</label>
-                                <input id="organizer" placeholder="Enter the organizer's name" type='text' />
+                                <input 
+                                    id="organizer" placeholder="Enter the organizer's name" type='text' 
+                                    name='organizer'
+                                    value={formData.organizer}
+                                    onChange={inputChange}
+                                />
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-6">
                             <div className="space-y-2 flex flex-col">
                                 <label htmlFor="event-type" className="text-deep-blue">Event Type</label>
-                                <select id="event-type">
-                                    <option value="volvo">Conference</option>
-                                    <option value="saab">Workshop</option>
-                                    <option value="mercedes">Meetup</option>
-                                    <option value="audi">Other</option>
+                                <select 
+                                    id="event-type"
+                                    name='type'
+                                    value={formData.type}
+                                    onChange={inputChange}
+                                >
+                                    <option value="conference">Conference</option>
+                                    <option value="workshop">Workshop</option>
+                                    <option value="meetup">Meetup</option>
+                                    <option value="others">Other</option>
                                 </select>
 
                             </div>
                             <div className="space-y-2 flex flex-col">
                                 <label htmlFor="ticket-price" className="text-deep-blue">Ticket Price</label>
-                                <input id="ticket-price" type="number" placeholder="0.00" />
+                                <input 
+                                    id="ticket-price" type="number" placeholder="0.00" 
+                                    name='ticketPrice'
+                                    value={formData.ticketPrice}
+                                    onChange={inputChange}
+                                />
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-6">
                             <div className="space-y-2 flex flex-col">
                                 <label htmlFor="start-date" className="text-deep-blue">Start Date</label>
-                                <input type='date' />
+                                <input 
+                                    type='date' 
+                                    name='startTime'
+                                    value={formData.startTime}
+                                    onChange={inputChange}
+                                />
                             </div>
                             <div className="space-y-2 flex flex-col">
                                 <label htmlFor="start-date" className="text-deep-blue">End Date</label>
-                                <input type='date' />
+                                <input 
+                                    type='date' 
+                                    name='endTime'
+                                    value={formData.endTime}
+                                    onChange={inputChange}
+                                />
                             </div>
                         </div>
                     </CardContent>
                     <CardFooter className="flex justify-end">
-                        <Button type="submit" className="text-primary hover:text-deep-blue bg-deep-blue ">Create Event</Button>
+                        <Button onClick={handleSubmit} className="text-primary hover:text-deep-blue bg-deep-blue ">Create Event</Button>
                     </CardFooter>
                 </Card>
             </div>
