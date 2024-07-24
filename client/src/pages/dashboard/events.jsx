@@ -20,7 +20,11 @@ const Events = () => {
         watch: true,
     });
     if (isLoading) {
-        return <div>Loading...</div>
+        return (
+            <div className='flex text-center justify-center items-center w-full h-screen'>
+                <h1 className='text-deep-blue text-6xl font-bold'>Loading...</h1>
+            </div>
+        )
     }
 
     if (isError) {

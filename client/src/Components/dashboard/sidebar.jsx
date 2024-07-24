@@ -9,7 +9,7 @@ import { KitContext } from '../../context/kit-context'
 
 const Sidebar = () => {
 
-    const {connect, connectors, address, account, disconnect} = useContext(KitContext)
+    const { connect, connectors, address, account, disconnect } = useContext(KitContext)
 
     const eventMainSidebarData = [
         {
@@ -20,15 +20,15 @@ const Sidebar = () => {
             url: "/events",
             icon: <FaFolderOpen className="w-6 h-6" />,
             title: "Events"
-        },
-        {
-            url: "/events/1",
-            icon: <IoMdAnalytics className="w-6 h-6" />,
-            title: "Analytics"
-        },{
+        }, {
             url: "/tickets",
             icon: <IoTicket className="w-6 h-6" />,
             title: "Tickets"
+        },
+        {
+            url: "/analytics",
+            icon: <IoMdAnalytics className="w-6 h-6" />,
+            title: "Analytics"
         }, {
             url: "/discover",
             icon: <FaCompass className="w-6 h-6" />,
@@ -37,7 +37,7 @@ const Sidebar = () => {
             url: "/settings",
             icon: <IoIosSettings className="w-6 h-6" />,
             title: "Settings"
-        }, 
+        },
     ]
 
     return (
@@ -65,10 +65,10 @@ const Sidebar = () => {
                         </div>
                     </div>
                     <div>
-                    <button onClick={() => disconnect()} className= {`normalLink py-3 px-10 mt-2 flex items-center rounded-l-full`}>
-                        <div ><IoLogOutSharp className="w-6 h-6" /></div>
-                        <h4 className="ml-4 text-lg font-semibold">Log Out</h4>
-                    </button>
+                        <button onClick={() => disconnect()} className={`normalLink py-3 px-10 mt-2 flex items-center rounded-l-full`}>
+                            <div ><IoLogOutSharp className="w-6 h-6" /></div>
+                            <h4 className="ml-4 text-lg font-semibold">Log Out</h4>
+                        </button>
                     </div>
                 </div>
             </div>
