@@ -8,7 +8,8 @@ pub trait IEventContract<TContractState> {
         _event_type: felt252,
         _start_date: u64,
         _end_date: u64,
-        _ticket_price: u256
+        _ticket_price: u256,
+        _total_tickets: u256
     ) -> bool;
     fn reschedule_event(ref self: TContractState, _event_id: u32, _start_date: u64, _end_date: u64);
     fn cancel_event(ref self: TContractState, _event_id: u32);
@@ -126,7 +127,8 @@ pub mod EventContract {
             _event_type: felt252,
             _start_date: u64,
             _end_date: u64,
-            _ticket_price: u256
+            _ticket_price: u256,
+            _total_tickets: u256
         ) -> bool {
             let caller = get_caller_address();
             let _event_count = self.event_count.read() + 1;
@@ -149,7 +151,7 @@ pub mod EventContract {
                 theme: _theme.into(),
                 organizer: caller,
                 event_type: _event_type,
-                total_tickets: 0,
+                total_tickets: _total_tickets,
                 tickets_sold: 0,
                 ticket_price: _ticket_price,
                 start_date: _start_date,
