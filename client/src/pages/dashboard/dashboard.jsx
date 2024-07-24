@@ -17,7 +17,7 @@ const Dashboard = () => {
   });
 
 
-console.log(data.toString())
+// console.log(data.toString())
   return (
     <Layout>
       {/* <button onClick={disconnectWallet}>connect</button> */}
