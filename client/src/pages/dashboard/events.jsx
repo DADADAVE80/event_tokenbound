@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { KitContext } from '../../context/kit-context'
 import { useState, useEffect } from 'react'
 import { useContractRead } from '@starknet-react/core'
+import EventCard from '../../Components/dashboard/event-card'
 
 const Events = () => {
     const {address, account, contract, eventAbi, contractAddr} = useContext(KitContext)
@@ -20,7 +21,7 @@ const Events = () => {
     });
 
 
-// console.log(data.toString())
+console.log(data.toString())
     return (
         <Layout>
             <div>
@@ -36,6 +37,7 @@ const Events = () => {
                 </div>
             </div>
             <div>Events_count:{data && data.toString()} </div>
+            <EventCard />
 
         </Layout>
     )
