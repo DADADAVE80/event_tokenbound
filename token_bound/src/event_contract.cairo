@@ -15,9 +15,10 @@ pub trait IEventContract<TContractState> {
     fn cancel_event(ref self: TContractState, _event_id: u32);
     fn purchase_ticket(ref self: TContractState, _event_id: u32);
     // fn resale_ticket (ref self : TContractState, event_id: u32) -> bool;
-    fn claim_ticket_refund(ref self: TContractState, _event_id: u32) -> bool;
+    fn claim_ticket_refund(ref self: TContractState, _event_id: u32);
     fn get_event(self: @TContractState, _event_id: u32) -> Events;
     fn get_event_count(self: @TContractState) -> u32;
+    fn user_event_ticket (self: @TContractState, _event_id: u32, _user: ContractAddress) -> u256;
 }
 
 #[derive(Drop, Serde, starknet::Store)]
@@ -187,6 +188,12 @@ pub mod EventContract {
             // assert caller is event organizer
             assert(caller == _organizer, token_bound::errors::Errors::NOT_ORGANIZER);
 
+            // assert event has not ended
+            assert(
+                event_instance.end_date < get_block_timestamp(),
+                token_bound::errors::Errors::EVENT_ENDED
+            );
+
             // reschedule event here
             self
                 .events
@@ -279,10 +286,10 @@ pub mod EventContract {
                 token_bound::errors::Errors::INSUFFICIENT_AMOUNT
             );
 
-            let event_ticket_price = event_instance.ticket_price * 1000000000000000000; // * (10**18);
+            let event_ticket_price = event_instance.ticket_price; // * (10**18);
 
             // approve transfer of strk from caller to smart contract
-            strk_erc20_contract.approve(address_this, event_ticket_price + 1);
+            // strk_erc20_contract.approve(address_this, event_ticket_price);
 
             // transfer strk from callers address to  smart contract
             strk_erc20_contract.transfer_from(caller, address_this, event_ticket_price);
@@ -400,8 +407,6 @@ pub mod EventContract {
                         event_id: _event_id, tba_acct: tba_acct, amount: event_instance.ticket_price
                     }
                 );
-
-            true
         }
 
         // view functions
@@ -411,6 +416,10 @@ pub mod EventContract {
 
         fn get_event(self: @ContractState, _event_id: u32) -> Events {
             self.events.read(_event_id)
+        }
+
+        fn user_event_ticket (self: @ContractState, _event_id: u32, _user: ContractAddress) -> u256 {
+            self.user_event_token_id.read((_event_id, _user))
         }
     }
 
