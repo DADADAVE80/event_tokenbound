@@ -22,7 +22,7 @@ const Sidebar = () => {
             title: "Events"
         },
         {
-            url: "/analytics",
+            url: "/events/1",
             icon: <IoMdAnalytics className="w-6 h-6" />,
             title: "Analytics"
         },{
