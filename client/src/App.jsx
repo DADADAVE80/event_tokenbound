@@ -21,7 +21,7 @@ import eventAbi from './Abis/eventAbi.json'
 const App = () => {
 
   // '0x03a6401c4b28ad044e00b85b3126663cc060098c8323b62d823a60fca10ed215'
-  const contractAddr = '0x0680ca13b2063e2be9198e63b1baaf550d9811364ca9605ca5ac3e48b2dc5070';
+  const contractAddr = '0x03d83aa74ff27203941cef0c4d8d4195590216abd2be3d86aeb3b930e0c9cc77';
   const { connect, connectors } = useConnect();
   const { account, address, status} = useAccount();
   const { disconnect } = useDisconnect();
