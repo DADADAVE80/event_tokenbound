@@ -5,7 +5,6 @@ pub trait IEventContract<TContractState> {
     fn create_event(
         ref self: TContractState,
         _theme: felt252,
-        _organizer: ContractAddress,
         _event_type: felt252,
         _start_date: u64,
         _end_date: u64,
@@ -103,7 +102,7 @@ pub mod EventContract {
         tba_address: ContractAddress,
         event_ticket_count: LegacyMap::<ContractAddress, u256>,
         user_event_token_id: LegacyMap::<(u32, ContractAddress), u256>,
-        user_has_cliam_refund: LegacyMap::<(u32, ContractAddress), bool>
+        user_has_claim_refund: LegacyMap::<(u32, ContractAddress), bool>
     }
 
     #[constructor]
@@ -124,7 +123,6 @@ pub mod EventContract {
         fn create_event(
             ref self: ContractState,
             _theme: felt252,
-            _organizer: ContractAddress,
             _event_type: felt252,
             _start_date: u64,
             _end_date: u64,
@@ -358,7 +356,7 @@ pub mod EventContract {
 
             let user_token_id = self
                 .user_event_token_id
-                .read((_event_id, event_instance.event_ticket_addr));
+                .read((_event_id, caller));
 
             // assert caler is not addr 0
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
@@ -390,7 +388,7 @@ pub mod EventContract {
 
             // confirm if user has been refunded
             assert(
-                self.user_has_cliam_refund.read((_event_id, tba_acct)) == false,
+                self.user_has_claim_refund.read((_event_id, tba_acct)) == false,
                 token_bound::errors::Errors::REFUND_CLIAMED
             );
 
@@ -398,7 +396,7 @@ pub mod EventContract {
             strk_erc20_contract.transfer(tba_acct, event_instance.ticket_price);
 
             // update the refund map
-            self.user_has_cliam_refund.write((_event_id, tba_acct), true);
+            self.user_has_claim_refund.write((_event_id, tba_acct), true);
 
             // emit the event for ticket recliam
             self
