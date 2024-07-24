@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import SidebarItem from './sidebar-item'
 import { IoLogOutSharp, IoTicket } from 'react-icons/io5'
 import { TiHome } from 'react-icons/ti'
 import { FaCompass, FaFolderOpen } from 'react-icons/fa'
 import { IoIosSettings, IoMdAnalytics } from 'react-icons/io'
+import { KitContext } from '../../context/kit-context'
 
 const Sidebar = () => {
+
+    const {connect, connectors, address, account, disconnect} = useContext(KitContext)
 
     const eventMainSidebarData = [
         {
@@ -57,15 +60,15 @@ const Sidebar = () => {
                     <div className='flex gap-3'>
                         <img src='/assets/profile-picture.png' alt='profile-picture' width={71} height={63} />
                         <div className='flex flex-col gap-2 justify-center'>
-                            <p className='text-base text-white font-normal'>0x0FY8999*******</p>
+                            <p className='text-base text-white font-normal'>{address.slice(0, 5)}***** {address.slice(16, 20)}</p>
                             <p className='text-base text-white font-normal'>0xgabriel.eth</p>
                         </div>
                     </div>
                     <div>
-                        <SidebarItem menu={{
-                            url: "#", icon: <IoLogOutSharp className="w-6 h-6" />,
-                            title: "Log Out"
-                        }} />
+                    <button onClick={() => disconnect()} className= {`normalLink py-3 px-10 mt-2 flex items-center rounded-l-full`}>
+                        <div ><IoLogOutSharp className="w-6 h-6" /></div>
+                        <h4 className="ml-4 text-lg font-semibold">Log Out</h4>
+                    </button>
                     </div>
                 </div>
             </div>
