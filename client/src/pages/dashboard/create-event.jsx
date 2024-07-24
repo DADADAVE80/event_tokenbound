@@ -43,7 +43,7 @@ const CreateEvent = () => {
 
     return (
         <Layout>
-            <div className='w-full mt-20 flex justify-center items-center'>
+            <div className='w-full mt-10 flex justify-center items-center'>
                 <Card className="w-full max-w-2xl shadow-2xl">
                     <CardHeader>
                         <CardTitle className="text-deep-blue">Create New Event</CardTitle>
