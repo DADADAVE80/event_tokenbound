@@ -34,7 +34,7 @@ const FeaturesSection = () => {
     return (
         <div className='bg-base-white flex flex-col justify-center items-center'>
             <div className='flex flex-col justify-center items-center max-w-[1280px]'>
-            <h1 className='text-deep-blue text-6xl font-bold pt-16 pb-20'>How it works</h1>
+            <h1 className='text-deep-blue text-6xl font-bold pt-16 pb-20'>Features</h1>
             <div className='flex justify-center items-center flex-wrap gap-6'>
                 {cards}
             </div>

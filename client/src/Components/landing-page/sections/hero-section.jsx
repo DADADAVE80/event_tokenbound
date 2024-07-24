@@ -10,7 +10,7 @@ const HeroSection = () => {
                     <Header />
                     <div className='flex flex-col gap-2 w-full h-full justify-center items-center mb-36 pt-10'>
                         <p className='text-2xl text-primary font-medium 2xl:text-4xl'>Have an Event?</p>
-                        <p className='text-6xl text-white font-medium 2xl:text-8xl'>Transform it with HostIT</p>
+                        <p className='text-6xl text-white font-medium 2xl:text-8xl'>Transform it with CrowdPass</p>
                         <Button className="bg-primary text-deep-blue text-lg px-10 py-2 font-semibold 2xl:text-2xl 2xl:py-6 2xl:px-12">Get Started</Button>
                     </div>
                 </div>

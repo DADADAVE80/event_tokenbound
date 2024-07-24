@@ -8,7 +8,7 @@ const UpdateSection = () => {
         {
             caption: "Create Event"
         },  {
-            caption: "HostIT"
+            caption: "CrowdPass"
         },  {
             caption: "Events made easy"
         }

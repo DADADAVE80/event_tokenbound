@@ -21,7 +21,7 @@ const EventDetails = () => {
     });
 
     console.log(data)
-    const {end_date, event_ticket_addr, event_type, is_canceled, organizer,  start_date, theme, ticket_price, tickets_sold, total_tickets} = data
+    // const {end_date, event_ticket_addr, event_type, is_canceled, organizer,  start_date, theme, ticket_price, tickets_sold, total_tickets} = data
 
     return (
         <Layout>
