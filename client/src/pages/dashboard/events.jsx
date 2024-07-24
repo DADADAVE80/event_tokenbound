@@ -9,7 +9,7 @@ import { useContractRead } from '@starknet-react/core'
 import EventCard from '../../Components/dashboard/event-card'
 
 const Events = () => {
-    const {address, account, contract, eventAbi, contractAddr} = useContext(KitContext)
+    const { address, account, contract, eventAbi, contractAddr } = useContext(KitContext)
     console.log(account)
 
     const { data, isError, isLoading, error } = useContractRead({
@@ -19,9 +19,17 @@ const Events = () => {
         address: contractAddr,
         watch: true,
     });
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
 
+    if (isError) {
+        return <div>Error: {error.message}</div>
+    }
 
-console.log(data.toString())
+    const eventCount = data?.toString();
+
+    console.log(data.toString())
     return (
         <Layout>
             <div>
@@ -36,8 +44,11 @@ console.log(data.toString())
                     </Link>
                 </div>
             </div>
-            <div>Events_count:{data && data.toString()} </div>
-            <EventCard />
+            <div className='flex flex-wrap gap-6'>
+                {Array(parseInt(eventCount)).fill(0).map((_, index) => (
+                    <EventCard key={index} id={"1"}/>
+                ))}
+            </div>
 
         </Layout>
     )
