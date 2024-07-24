@@ -19,7 +19,7 @@ const LandingPage = () => {
         <FaqSection />
         <UpcomingSection />
         <TestimonialsSection />
-        <img src='/assets/' />
+        <img src='/assets/various-events.jpg' className='w-full bg-cover'/>
     </div>
   )
 }

@@ -9,11 +9,11 @@ import Events from './pages/dashboard/events'
 import Settings from './pages/dashboard/settings'
 import Tickets from './pages/dashboard/tickets'
 import EventDetails from './pages/dashboard/event-details'
-import { useState, useEffect } from 'react'
 import { KitContext } from './context/kit-context'
 import { StarknetProvider } from './context/starknet-provider'
 import { useConnect, useDisconnect } from "@starknet-react/core";
 import { useAccount } from "@starknet-react/core";
+import CreateEvent from './pages/dashboard/create-event'
 
 const App = () => {
 
@@ -31,7 +31,7 @@ const App = () => {
         <Route path="/discover" element={status == 'disconnected' ? <LandingPage /> : <Discover />} />
         <Route path="/events" element={status == 'disconnected' ? <LandingPage /> : <Events />} />
         <Route path="/events/:id" element={status == 'disconnected' ? <LandingPage /> : <EventDetails />} />
-
+        <Route path="/create-events" element={status == 'disconnected' ? <LandingPage /> : <CreateEvent />} />
         <Route path="/settings" element={status == 'disconnected' ? <LandingPage /> : <Settings />} />
         <Route path="/tickets" element={status == 'disconnected' ? <LandingPage /> : <Tickets />} />
         {/* <Route path="/test" element={<Test />} /> */}
