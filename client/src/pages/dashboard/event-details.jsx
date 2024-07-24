@@ -88,7 +88,7 @@ const EventDetails = () => {
                         />
                         <div className="absolute inset-0 bg-black/50 z-10" />
                         <div className="relative z-20 h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center text-base-white">
-                            {/* <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">{feltToString(data?.theme)}</h1> */}
+                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">{feltToString(data?.theme)}</h1>
                             <p className="mt-4 max-w-3xl text-lg sm:text-xl">
                                 Join us for a day of inspiring talks, networking, and exploring the latest trends in the industry.
                             </p>
@@ -123,7 +123,7 @@ const EventDetails = () => {
                                     <MapPinIcon className="w-6 h-6 text-muted-foreground" />
                                     <div>
                                         <div className="text-sm sm:text-base font-medium  text-deep-blue">Ticket Price</div>
-                                        <div className="text-muted-foreground  text-deep-blue">{String(data?.ticket_price)}</div>
+                                        <div className="text-muted-foreground  text-deep-blue">$STRK-{String(data?.ticket_price)}</div>
                                     </div>
                                 </div>
 
