@@ -32,7 +32,7 @@ const CreateEvent = () => {
         
         try {
            
-            await eventContract.create_event(formData.theme, formData.organizer, formData.type, _start_date, _end_date, formData.ticketPrice)
+            await eventContract.create_event(formData.theme, formData.type, _start_date, _end_date, formData.ticketPrice)
             alert('succesfully added')
             
         } catch (error) {

@@ -5,7 +5,6 @@ pub trait IEventContract<TContractState> {
     fn create_event(
         ref self: TContractState,
         _theme: felt252,
-        _organizer: ContractAddress,
         _event_type: felt252,
         _start_date: u64,
         _end_date: u64,
@@ -15,9 +14,10 @@ pub trait IEventContract<TContractState> {
     fn cancel_event(ref self: TContractState, _event_id: u32);
     fn purchase_ticket(ref self: TContractState, _event_id: u32);
     // fn resale_ticket (ref self : TContractState, event_id: u32) -> bool;
-    fn cliam_ticket_refund(ref self: TContractState, _event_id: u32);
+    fn claim_ticket_refund(ref self: TContractState, _event_id: u32);
     fn get_event(self: @TContractState, _event_id: u32) -> Events;
     fn get_event_count(self: @TContractState) -> u32;
+    fn user_event_ticket (self: @TContractState, _event_id: u32, _user: ContractAddress) -> u256;
 }
 
 #[derive(Drop, Serde, starknet::Store)]
@@ -102,7 +102,7 @@ pub mod EventContract {
         tba_address: ContractAddress,
         event_ticket_count: LegacyMap::<ContractAddress, u256>,
         user_event_token_id: LegacyMap::<(u32, ContractAddress), u256>,
-        user_has_cliam_refund: LegacyMap::<(u32, ContractAddress), bool>
+        user_has_claim_refund: LegacyMap::<(u32, ContractAddress), bool>
     }
 
     #[constructor]
@@ -123,7 +123,6 @@ pub mod EventContract {
         fn create_event(
             ref self: ContractState,
             _theme: felt252,
-            _organizer: ContractAddress,
             _event_type: felt252,
             _start_date: u64,
             _end_date: u64,
@@ -186,6 +185,12 @@ pub mod EventContract {
 
             // assert caller is event organizer
             assert(caller == _organizer, token_bound::errors::Errors::NOT_ORGANIZER);
+
+            // assert event has not ended
+            assert(
+                event_instance.end_date < get_block_timestamp(),
+                token_bound::errors::Errors::EVENT_ENDED
+            );
 
             // reschedule event here
             self
@@ -279,11 +284,13 @@ pub mod EventContract {
                 token_bound::errors::Errors::INSUFFICIENT_AMOUNT
             );
 
+            let event_ticket_price = event_instance.ticket_price; // * (10**18);
+
             // approve transfer of strk from caller to smart contract
-            strk_erc20_contract.approve(address_this, event_instance.ticket_price);
+            // strk_erc20_contract.approve(address_this, event_ticket_price);
 
             // transfer strk from callers address to  smart contract
-            strk_erc20_contract.transfer_from(caller, address_this, event_instance.ticket_price);
+            strk_erc20_contract.transfer_from(caller, address_this, event_ticket_price);
 
             // mint the nft ticket to the user
             let event_ticket_address = event_instance.event_ticket_addr;
@@ -327,7 +334,7 @@ pub mod EventContract {
                 );
         }
 
-        fn cliam_ticket_refund(ref self: ContractState, _event_id: u32) {
+        fn claim_ticket_refund(ref self: ContractState, _event_id: u32) {
             let caller = get_caller_address();
             let _event_count = self.event_count.read();
             // let address_this = get_contract_address();
@@ -349,7 +356,7 @@ pub mod EventContract {
 
             let user_token_id = self
                 .user_event_token_id
-                .read((_event_id, event_instance.event_ticket_addr));
+                .read((_event_id, caller));
 
             // assert caler is not addr 0
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
@@ -381,7 +388,7 @@ pub mod EventContract {
 
             // confirm if user has been refunded
             assert(
-                self.user_has_cliam_refund.read((_event_id, tba_acct)) == false,
+                self.user_has_claim_refund.read((_event_id, tba_acct)) == false,
                 token_bound::errors::Errors::REFUND_CLIAMED
             );
 
@@ -389,7 +396,7 @@ pub mod EventContract {
             strk_erc20_contract.transfer(tba_acct, event_instance.ticket_price);
 
             // update the refund map
-            self.user_has_cliam_refund.write((_event_id, tba_acct), true);
+            self.user_has_claim_refund.write((_event_id, tba_acct), true);
 
             // emit the event for ticket recliam
             self
@@ -407,6 +414,10 @@ pub mod EventContract {
 
         fn get_event(self: @ContractState, _event_id: u32) -> Events {
             self.events.read(_event_id)
+        }
+
+        fn user_event_ticket (self: @ContractState, _event_id: u32, _user: ContractAddress) -> u256 {
+            self.user_event_token_id.read((_event_id, _user))
         }
     }
 
