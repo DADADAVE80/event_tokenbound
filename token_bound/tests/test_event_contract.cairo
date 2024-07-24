@@ -5,6 +5,8 @@ use snforge_std::{
 };
 use core::traits::{TryInto, Into};
 
+use openzeppelin::tests::mocks::DualCaseERC20Mock;
+
 use token_bound::ticket_nft::TicketNFT;
 use token_bound::ticket_factory::{TicketFactory, ITicketFactory};
 use token_bound::event_contract::EventContract;
@@ -29,6 +31,7 @@ pub fn deploy_contract(name: ByteArray) -> ContractAddress {
 // *************************************************************************
 fn __setup__() -> (ContractAddress, ContractAddress, felt252) {
     // Deploy ERC20 contract
+    let erc20_contract_address = deploy_contract("DualCaseERC20Mock");
     
     // Declare ticket NFT
     let ticket_nft_class_hash = declare("TicketNFT").unwrap();
@@ -64,9 +67,9 @@ fn test_create_event() {
 
     event_contract_dispatcher
         .create_event(
-            'Event 1',
+            'Event 1'.into(),
             USER1.try_into().unwrap(),
-            'Virtual',
+            'Virtual'.into(),
             1721764952,
             1721937394,
             1,
