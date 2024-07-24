@@ -7,7 +7,9 @@ import {
   argent,
   braavos,
   useInjectedConnectors,
-  voyager
+  voyager,
+  jsonRpcProvider, 
+  alchemyProvider
 } from "@starknet-react/core";
 
 export function StarknetProvider({ children }) {
@@ -23,9 +25,12 @@ export function StarknetProvider({ children }) {
     order: "random"
   });
 
+//   const provider = jsonRpcProvider({ rpc: 'https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_7/RCp5m7oq9i9myxsvC8ctUmNq2Wq2Pa_v'});
+  const provider = alchemyProvider({ apiKey: 'RCp5m7oq9i9myxsvC8ctUmNq2Wq2Pa_v' });
+
   return (
     <StarknetConfig
-      chains={[mainnet, sepolia]}
+      chains={[sepolia]}
       provider={publicProvider()}
       connectors={connectors}
       explorer={voyager}
