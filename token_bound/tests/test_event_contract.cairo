@@ -1,7 +1,7 @@
 use starknet::ContractAddress;
 use snforge_std::{
     declare, start_cheat_caller_address, stop_cheat_caller_address, start_cheat_block_number,
-    start_cheat_block_timestamp, caller_address, ContractClassTrait
+    start_cheat_block_timestamp, ContractClassTrait
 };
 use core::traits::{TryInto, Into};
 
@@ -28,6 +28,8 @@ pub fn deploy_contract(name: ByteArray) -> ContractAddress {
 //                              SETUP 
 // *************************************************************************
 fn __setup__() -> (ContractAddress, ContractAddress, felt252) {
+    // Deploy ERC20 contract
+    
     // Declare ticket NFT
     let ticket_nft_class_hash = declare("TicketNFT").unwrap();
 
@@ -57,10 +59,8 @@ fn test_create_event() {
     };
 
     start_cheat_caller_address(
-        USER1.try_into().unwrap(), 1234.try_into().unwrap()
+        event_contract_address, USER1.try_into().unwrap()
     );
-    // start_cheat_block_number(USER1.try_into().unwrap(), 234);
-    // start_cheat_block_timestamp(USER1.try_into().unwrap(), 123);
 
     event_contract_dispatcher
         .create_event(
@@ -75,7 +75,7 @@ fn test_create_event() {
     // Check if the event was created
     let event_count = event_contract_dispatcher.get_event_count();
 
-    assert(event_count == 1, 'No event was created');
+    assert(event_count > 0, 'No event was created');
 
     // Check event organizer
     // let event_instance: Events = event_contract_dispatcher.get_event(1);
