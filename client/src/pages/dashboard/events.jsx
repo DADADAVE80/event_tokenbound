@@ -46,7 +46,7 @@ const Events = () => {
             </div>
             <div className='flex flex-wrap gap-6'>
                 {Array(parseInt(eventCount)).fill(0).map((_, index) => (
-                    <EventCard key={index} id={"1"}/>
+                    <EventCard key={index} id={index + 1}/>
                 ))}
             </div>
 

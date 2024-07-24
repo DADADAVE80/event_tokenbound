@@ -15,22 +15,27 @@ import { useConnect, useDisconnect } from "@starknet-react/core";
 import { useAccount } from "@starknet-react/core";
 import CreateEvent from './pages/dashboard/create-event'
 import { useContract } from "@starknet-react/core";
-import { Contract } from 'starknet'
+import { Contract, RpcProvider } from 'starknet'
 import eventAbi from './Abis/eventAbi.json'
 
 const App = () => {
 
-  const contractAddr = '0x03a6401c4b28ad044e00b85b3126663cc060098c8323b62d823a60fca10ed215';
+  // '0x03a6401c4b28ad044e00b85b3126663cc060098c8323b62d823a60fca10ed215'
+  const contractAddr = '0x0680ca13b2063e2be9198e63b1baaf550d9811364ca9605ca5ac3e48b2dc5070';
   const { connect, connectors } = useConnect();
   const { account, address, status} = useAccount();
   const { disconnect } = useDisconnect();
   const { contract } = useContract({ abi: eventAbi, address: contractAddr, provider: account})
+  const providers = new RpcProvider({
+    nodeUrl: 'https://free-rpc.nethermind.io/sepolia-juno/',
+  });
 
   const eventContract = new Contract(eventAbi, contractAddr, account)
+  const readEventContract = new Contract(eventAbi, contractAddr, providers)
 
   return (
     <StarknetProvider>
-      <KitContext.Provider value={{connect, disconnect, connectors, address, account, contract, contractAddr, eventAbi, eventContract}}>
+      <KitContext.Provider value={{connect, disconnect, connectors, address, account, contract, contractAddr, eventAbi, eventContract, readEventContract}}>
       <Routes>
         <Route path="/" element={status == 'disconnected' ? <LandingPage /> : <Dashboard />} />
         <Route path="/dashboard" element={status == 'disconnected' ? <LandingPage /> : <Dashboard />} />

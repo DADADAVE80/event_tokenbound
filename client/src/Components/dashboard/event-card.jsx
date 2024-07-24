@@ -4,6 +4,7 @@ import { Button } from "../shared/button"
 import { Link } from 'react-router-dom'
 
 const EventCard = ({id}) => {
+
   return (
     <Card className="w-full max-w-md p-4 border border-muted rounded-lg">
       <img src="/assets/about-image-podcast.jpg" alt="Event Image" className="rounded-t-lg object-cover w-full h-48" />
