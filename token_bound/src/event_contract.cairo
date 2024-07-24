@@ -15,7 +15,7 @@ pub trait IEventContract<TContractState> {
     fn cancel_event(ref self: TContractState, _event_id: u32);
     fn purchase_ticket(ref self: TContractState, _event_id: u32);
     // fn resale_ticket (ref self : TContractState, event_id: u32) -> bool;
-    fn cliam_ticket_refund(ref self: TContractState, _event_id: u32);
+    fn claim_ticket_refund(ref self: TContractState, _event_id: u32) -> bool;
     fn get_event(self: @TContractState, _event_id: u32) -> Events;
     fn get_event_count(self: @TContractState) -> u32;
 }
@@ -279,11 +279,13 @@ pub mod EventContract {
                 token_bound::errors::Errors::INSUFFICIENT_AMOUNT
             );
 
+            let event_ticket_price = event_instance.ticket_price * 1000000000000000000; // * (10**18);
+
             // approve transfer of strk from caller to smart contract
-            strk_erc20_contract.approve(address_this, event_instance.ticket_price);
+            strk_erc20_contract.approve(address_this, event_ticket_price + 1);
 
             // transfer strk from callers address to  smart contract
-            strk_erc20_contract.transfer_from(caller, address_this, event_instance.ticket_price);
+            strk_erc20_contract.transfer_from(caller, address_this, event_ticket_price);
 
             // mint the nft ticket to the user
             let event_ticket_address = event_instance.event_ticket_addr;
@@ -327,7 +329,7 @@ pub mod EventContract {
                 );
         }
 
-        fn cliam_ticket_refund(ref self: ContractState, _event_id: u32) {
+        fn claim_ticket_refund(ref self: ContractState, _event_id: u32) {
             let caller = get_caller_address();
             let _event_count = self.event_count.read();
             // let address_this = get_contract_address();
@@ -398,6 +400,8 @@ pub mod EventContract {
                         event_id: _event_id, tba_acct: tba_acct, amount: event_instance.ticket_price
                     }
                 );
+
+            true
         }
 
         // view functions
