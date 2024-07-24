@@ -132,8 +132,6 @@ pub mod EventContract {
             let caller = get_caller_address();
             let _event_count = self.event_count.read() + 1;
             let address_this = get_contract_address();
-            let ticket_impl_hash: felt252 =
-                0x380b1261c4227547f0a642b87726296361f34ddeb02122cc2029cee82bfe532;
 
             // assert not zero ContractAddress
             assert(caller.is_non_zero(), token_bound::errors::Errors::ZERO_ADDRESS_CALLER);
@@ -144,7 +142,7 @@ pub mod EventContract {
             };
 
             let _event_ticket_addr = ticket_factory
-                .deploy_ticket(ticket_impl_hash, caller, address_this, _event_count.into());
+                .deploy_ticket(caller, address_this, _event_count.into());
 
             // new event struct instance
             let event_instance = Events {
@@ -281,11 +279,8 @@ pub mod EventContract {
                 token_bound::errors::Errors::INSUFFICIENT_AMOUNT
             );
 
-            // assert if caller have given allowance to transfer strk
-            assert(
-                strk_erc20_contract.allowance(caller, address_this) >= event_instance.ticket_price,
-                token_bound::errors::Errors::LOW_TOKEN_ALLOWANCE
-            );
+            // approve transfer of strk from caller to smart contract
+            strk_erc20_contract.approve(address_this, event_instance.ticket_price);
 
             // transfer strk from callers address to  smart contract
             strk_erc20_contract.transfer_from(caller, address_this, event_instance.ticket_price);
@@ -297,8 +292,11 @@ pub mod EventContract {
 
             ticket_nft.mint_ticket_nft(caller);
 
+            // update tickets sold
+            let _tickets_sold = event_instance.tickets_sold + 1;
+
             // update legacymap with user token_id
-            self.user_event_token_id.write((_event_id, caller), event_instance.tickets_sold);
+            self.user_event_token_id.write((_event_id, caller), _tickets_sold);
 
             // increase ticket_sold count from event instance
             self
@@ -311,7 +309,7 @@ pub mod EventContract {
                         organizer: event_instance.organizer,
                         event_type: event_instance.event_type,
                         total_tickets: event_instance.total_tickets,
-                        tickets_sold: event_instance.tickets_sold + 1,
+                        tickets_sold: _tickets_sold,
                         ticket_price: event_instance.ticket_price,
                         start_date: event_instance.start_date,
                         end_date: event_instance.end_date,
@@ -372,7 +370,7 @@ pub mod EventContract {
             // confirm if caller is the nft owner
             assert(
                 ticket_nft.owner_of(user_token_id) == caller,
-                token_bound::errors::Errors::NOT_TICKET_HOLDER
+                token_bound::errors::Errors::NOT_TICKET_OWNER
             );
 
             // get users tba account
