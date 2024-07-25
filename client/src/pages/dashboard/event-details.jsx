@@ -13,6 +13,8 @@ import { TokenboundClient } from 'starknet-tokenbound-sdk';
 import { RescheduleDialog } from '../../Components/dashboard/reschedule-dialog';
 import { Dialog } from '../../Components/shared/dialog';
 import TicketDialog from '../../Components/dashboard/ticket-dialog';
+import { cairo } from 'starknet';
+import strkAbi from '../../Abis/strkAbi.json'
 
 
 const EventDetails = () => {
@@ -27,9 +29,9 @@ const EventDetails = () => {
         }))
     }
 
-    const [event, setEvent] = useState()
+    const [tba, setTba] = useState('')
     const { id } = useParams()
-    const { address, account, contract, eventAbi, contractAddr, eventContract, readEventContract } = useContext(KitContext)
+    const { address, account, contract, eventAbi, contractAddr, eventContract, readEventContract, strkContract } = useContext(KitContext)
 
 
     const { data, isError, isLoading, error } = useContractRead({
@@ -59,6 +61,7 @@ const EventDetails = () => {
 
         try {
 
+            // await strkContract.approve(contract?.address, cairo.uint256(2))
             await eventContract.purchase_ticket(id)
             alert('succesfully added')
 
@@ -108,7 +111,7 @@ const EventDetails = () => {
         account: account,
         registryAddress: `0x4101d3fa033024654083dd982273a300cb019b8cb96dd829267a4daf59f7b7e`,
         implementationAddress: `0x45d67b8590561c9b54e14dd309c9f38c4e2c554dd59414021f9d079811621bd`,
-        jsonRPC: ``
+        jsonRPC: `https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_7/RCp5m7oq9i9myxsvC8ctUmNq2Wq2Pa_v`
     }
 
     let tokenbound;
@@ -121,13 +124,19 @@ const EventDetails = () => {
 
     // get account status
     const getStatus = async () => {
-        const status = await tokenbound.checkAccountDeployment({
-            tokenContract: `0x${data?.event_ticket_addr.toString(16)}`,
-            tokenId: userTicket,
-            salt: "3000000000"
-        })
-
-        console.log(status)
+        try {
+            const status = await tokenbound.checkAccountDeployment({
+                tokenContract: `0x${data?.event_ticket_addr.toString(16)}`,
+                tokenId: userTicket,
+                salt: userTicket
+            })
+    
+            if(status){
+                console.log(status)
+            }
+        } catch (error) {
+            console.log(error)
+        }        
     }
 
 
@@ -136,7 +145,7 @@ const EventDetails = () => {
             await tokenbound.createAccount({
                 tokenContract: `0x${data?.event_ticket_addr.toString(16)}`,
                 tokenId: userTicket,
-                salt: "3000000000"
+                salt: userTicket
             })
         }
         catch (error) {
@@ -147,6 +156,24 @@ const EventDetails = () => {
     useEffect(() => {
         getStatus()
     }, [])
+ 
+    const getAccount = async () => {
+        try {   
+            const account = await tokenbound.getAccount({
+                tokenContract: `0x${data?.event_ticket_addr.toString(16)}`,
+                tokenId: userTicket,
+                salt: userTicket
+            })
+    
+            console.log(`0x${account.toString(16)}`)
+            setTba(`0x${account.toString(16)}`)
+        } catch (error) {
+            console.log(error)
+        }
+        
+        }
+
+        console.log(tba)
 
     return (
         <Layout>
@@ -216,7 +243,7 @@ const EventDetails = () => {
                                             <MdLiveTv className="w-6 h-6 text-muted-foreground text-[#777D7F]" />
                                             <div className='flex flex-col gap-1'>
                                                 <div className="text-sm sm:text-base font-medium  text-[#777D7F]">Event status </div>
-                                                <div className="text-muted-foreground text-sm text-slate-700 font-semibold">{(data?.is_canceled) ? "Ongoing" : "Ended"}</div>
+                                                <div className="text-muted-foreground text-sm text-slate-700 font-semibold">{(data?.is_canceled) ? "canceled" : "Ongoing"}</div>
                                             </div>
                                         </div>
 
@@ -236,6 +263,9 @@ const EventDetails = () => {
                                                 <div className="text-muted-foreground text-sm text-slate-700 font-semibold">{String(data?.tickets_sold)}</div>
                                             </div>
                                         </div>
+                                        <Button onClick={getAccount} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
+                                            Get ticket
+                                        </Button>
                                         <div className="flex items-start gap-4 sm:gap-6">
                                             <TicketCheck className="w-6 h-6 text-muted-foreground text-deep-blu e" />
                                             <div className='flex flex-col gap-1'>
@@ -256,23 +286,24 @@ const EventDetails = () => {
                                                     <div className="flex gap-8">
                                                         <RescheduleDialog id={id} />
 
-                                                        <Button onClick={""} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
+                                                        <Button onClick={cancelEvent} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
                                                             Cancel Event
                                                         </Button>
                                                     </div></> :
                                                 <div className="flex">
-                                                    {Number(userTicket) !== 0 ?
+                                                    {Number(userTicket) == 0 ?
                                                         <Button onClick={handleSubmit} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
                                                             Get ticket
                                                         </Button>
                                                         :
-                                                      <TicketDialog theme={feltToString(data?.theme)} startDate={startDateResponse.dateTime} endDate={endDateResponse.dateTime} location={feltToString(data?.event_type)} id={id} deployAccount={deployAccount}/>
+                                                      <TicketDialog theme={feltToString(data?.theme)} startDate={startDateResponse.dateTime} endDate={endDateResponse.dateTime} location={feltToString(data?.event_type)} id={id} deployAccount={deployAccount} getStatus={getStatus} getAccount={getAccount} tba={tba} />
                                                     }
 
                                                 </div>
                                         }
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                         <a href={`https://sepolia.voyager.online/contract/0x${data?.event_ticket_addr.toString(16)}`} target="_blank" rel="noopener noreferrer" className='underline text-blue-700 text-center w-full flex items-center justify-end pr-10 my-2'> View tickets NFT address</a>

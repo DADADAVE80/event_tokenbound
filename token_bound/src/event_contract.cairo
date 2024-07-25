@@ -38,7 +38,8 @@ pub struct Events {
 
 #[starknet::contract]
 pub mod EventContract {
-    use core::{traits::{TryInto, Into}, num::traits::zero::Zero};
+    use core::option::OptionTrait;
+use core::{traits::{TryInto, Into}, num::traits::zero::Zero};
     use super::{Events, IEventContract};
     use starknet::{get_caller_address, ContractAddress, get_block_timestamp, get_contract_address};
 
@@ -46,7 +47,7 @@ pub mod EventContract {
         erc20_interface::{IERC20Dispatcher, IERC20DispatcherTrait},
         erc721_interface::{IERC721Dispatcher, IERC721DispatcherTrait},
         ticket_factory::{ITicketFactoryDispatcher, ITicketFactoryDispatcherTrait},
-        tba_registry_interface::{IRegistryDispatcher, IRegistryDispatcherTrait}
+        tba_registry_interface::{IRegistryDispatcher, IRegistryDispatcherTrait, IRegistryLibraryDispatcher}
     };
 
     // events
@@ -268,7 +269,7 @@ pub mod EventContract {
             let _event_count = self.event_count.read();
             let address_this = get_contract_address();
 
-            let mut event_instance = self.events.read(_event_id);
+            let event_instance = self.events.read(_event_id);
 
             let strk_erc20_contract = IERC20Dispatcher {
                 contract_address: self.token_address.read()
@@ -286,7 +287,7 @@ pub mod EventContract {
                 token_bound::errors::Errors::INSUFFICIENT_AMOUNT
             );
 
-            let event_ticket_price = event_instance.ticket_price; // * (10**18);
+            let event_ticket_price: u256 = event_instance.ticket_price;
 
             // approve transfer of strk from caller to smart contract
             // strk_erc20_contract.approve(address_this, event_ticket_price);
@@ -354,7 +355,12 @@ pub mod EventContract {
                 contract_address: event_instance.event_ticket_addr
             };
 
-            let tba_contract = IRegistryDispatcher { contract_address: self.tba_address.read() };
+            // let tba_contract = IRegistryDispatcher { contract_address: self.tba_address.read() };
+
+            let impl_hash: felt252 =
+            0x46163525551f5a50ed027548e86e1ad023c44e0eeb0733f0dab2fb1fdc31ed0;
+
+            let tba = IRegistryLibraryDispatcher {class_hash: impl_hash.try_into().unwrap()};
 
             let user_token_id = self
                 .user_event_token_id
@@ -382,10 +388,11 @@ pub mod EventContract {
                 token_bound::errors::Errors::NOT_TICKET_OWNER
             );
 
+            // let _salt: felt252 = '3000000000';
             // get users tba account
-            let tba_acct = tba_contract
-                .get_account(
-                    acct_impl_hash, event_instance.event_ticket_addr, user_token_id, 300000
+            let tba_acct = tba
+                .create_account(
+                    acct_impl_hash, event_instance.event_ticket_addr, user_token_id, user_token_id.try_into().unwrap()
                 );
 
             // confirm if user has been refunded
