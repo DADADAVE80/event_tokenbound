@@ -5,23 +5,22 @@ const FaqAccordion = () => {
 
     const FaqAccordionData = [
         {
-            title: "Lorem ipsum dolor sit amet, consectetur.",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            title: "What is CrowdPass?",
+            description: "CrowdPass is a decentralized event ticketing and management platform that allows event organizers to create, manage, and promote their events with ease."
         }, {
-            title: "Lorem ipsum dolor sit amet, consectetur.",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            title: "How do I create an event on CrowdPass?",
+            description: "To create an event on CrowdPass, simply sign up for an account, click on 'Create Event', and fill out the event details. Our platform will guide you through the process."
         }, {
-            title: "Lorem ipsum dolor sit amet, consectetur.",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            title: "What is POAP, and how does it work?",
+            description: "POAP (Proof of Attendance Protocol) is a digital collectible that proves attendance at an event. CrowdPass integrates POAP to reward attendees and create a unique experience."
         }, {
-            title: "Lorem ipsum dolor sit amet, consectetur.",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            title: "Is my data secure on CrowdPass?",
+            description: "Yes, CrowdPass prioritizes data security. We use robust security measures to protect your data and ensure a safe and secure experience."
         }, {
-            title: "Lorem ipsum dolor sit amet, consectetur.",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            title: "How do I contact CrowdPass support?",
+            description: "You can contact CrowdPass support by clicking on the 'Support' button on our website or by sending an email to support@CrowdPass.com. We're here to help!"
         },
     ]
-    
     return (
         <Accordion type="single" collapsible className="w-[500px] flex flex-col gap-6">
             {

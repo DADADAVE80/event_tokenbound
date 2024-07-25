@@ -6,19 +6,19 @@ const HiwAccordion = () => {
         {
             icon: "/assets/decentralized-identity.png",
             title: "Create and verify your identity",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            description: "Create a secure and decentralized identity to access events and experiences. Verify your identity with our robust verification process."
         }, {
             icon: "/assets/decentralized-identity.png",
-            title: "Create and verify your identity",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            title: "Set up your event profile",
+            description: "Complete your event profile with essential information, such as name, location, and date. Showcase your event to potential attendees."
         }, {
-            icon: "/assets/decentralized-identity.png",
-            title: "Create and verify your identity",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            icon: "/assets/real-time-analytics.png",
+            title: "Manage event tickets and sales",
+            description: "Effortlessly manage event tickets, track sales, and monitor revenue in real-time. Get insights into your event's performance."
         }, {
-            icon: "/assets/decentralized-identity.png",
-            title: "Create and verify your identity",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            icon: "/assets/event-management.png",
+            title: "Engage with attendees and build community",
+            description: "Foster meaningful connections with attendees through our community-building tools. Encourage engagement and create a loyal following."
         },]
 
     return (
