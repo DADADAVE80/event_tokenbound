@@ -16,30 +16,6 @@ const Tickets = () => {
             date: "June 1-3, 2023",
             imageUrl: "/assets/profile-picture.png",
         },
-        {
-            id: 3,
-            eventName: "Web3 Summit",
-            date: "September 12-14, 2023",
-            imageUrl: "/assets/profile-picture.png",
-        },
-        {
-            id: 4,
-            eventName: "NFT Art Gallery Opening",
-            date: "November 5, 2023",
-            imageUrl: "/assets/profile-picture.png",
-        },
-        {
-            id: 5,
-            eventName: "Blockchain Developers Conference",
-            date: "February 20-22, 2024",
-            imageUrl: "/assets/profile-picture.png",
-        },
-        {
-            id: 6,
-            eventName: "Metaverse Expo",
-            date: "May 1-3, 2024",
-            imageUrl: "/assets/profile-picture.png",
-        },
     ]
     return (
         <Layout>
@@ -52,7 +28,7 @@ const Tickets = () => {
                     </div>
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-5">
                         {
-                            tickets.map(({ id, eventName, date, imageUrl }, index) => {
+                            tickets.map(({ id, eventName, date, imageUrl }) => {
                                 return (
                                     <TicketCard id={id} eventName={eventName} date={date} image={imageUrl} />
                                 )

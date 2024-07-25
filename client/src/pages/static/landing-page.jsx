@@ -7,6 +7,7 @@ import HiwSection from '../../Components/landing-page/sections/hiw-section'
 import FaqSection from '../../Components/landing-page/sections/faq-section'
 import UpcomingSection from '../../Components/landing-page/sections/upcoming-section'
 import TestimonialsSection from '../../Components/landing-page/sections/testimonials-section'
+import Footer from "../../Components/landing-page/footer"
 
 const LandingPage = () => {
   return (
@@ -20,6 +21,7 @@ const LandingPage = () => {
         <UpcomingSection />
         <TestimonialsSection />
         <img src='/assets/various-events.jpg' className='w-full bg-cover'/>
+        <Footer />
     </div>
   )
 }
