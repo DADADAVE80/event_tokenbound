@@ -23,6 +23,9 @@ const EventDetails = () => {
         startTime: '',
         endTime: '',
     })
+    const [reclaimed, setReclaimed] = useState(false)
+
+    const [appApproved, setAppApproved] = useState(false)
 
     const inputChange = (e) => {
         setFormData((prevState) => ({
@@ -57,6 +60,23 @@ const EventDetails = () => {
     const startDateResponse = epochToDatetime(String(data?.start_date))
     const endDateResponse = epochToDatetime(String(data?.end_date))
 
+
+    const handleApprove = async (e) => {
+        e.preventDefault()
+        const toast1 = toast.loading('Approving App')
+
+        try {
+
+            await strkContract.approve(contract?.address, cairo.uint256(data?.ticket_price))
+            toast.remove(toast1);
+            toast.success("App approval successful")
+        } catch (error) {
+            toast.remove(toast1);
+            toast.error(error.message)
+        }
+    }
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const toast1 = toast.loading('Purchasing ticket')
@@ -64,6 +84,7 @@ const EventDetails = () => {
         try {
 
             // await strkContract.approve(contract?.address, cairo.uint256(2))
+            handleApprove()
             await eventContract.purchase_ticket(id)
             toast.remove(toast1);
             toast.success("Ticket purchase successful")
@@ -108,6 +129,21 @@ const EventDetails = () => {
         }
     }
 
+    const claim_ticket_refund = async (e) => {
+        e.preventDefault()
+        const toast1 = toast.loading('Reclaiming ticket fee')
+
+        try {
+
+            await eventContract.claim_ticket_refund(id)
+            toast.remove(toast1);
+            toast.success("Refund claimed")
+            setReclaimed(true)
+        } catch (error) {
+            toast.remove(toast1);
+            toast.error(error.message)
+        }
+    }
 
     // tokenbound integration
     const options = {
@@ -292,15 +328,20 @@ const EventDetails = () => {
                                                 </div></> :
                                             <div className="flex">
                                                 {Number(userTicket) === 0 ? <div className='flex gap-2'>
-                                                    <Button onClick={handleSubmit} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
+                                                    <Button onClick={handleApprove} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
                                                         Give app approval
                                                     </Button>
                                                     <Button onClick={handleSubmit} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
                                                         Get ticket
                                                     </Button>
                                                 </div>
-                                                    :
-                                                    <TicketDialog theme={feltToString(data?.theme)} startDate={startDateResponse.dateTime} endDate={endDateResponse.dateTime} location={feltToString(data?.event_type)} id={id} deployAccount={deployAccount} getStatus={getStatus} getAccount={getAccount} tba={tba} />
+                                                    : <div className='flex gap-3'>{
+                                                        (data?.is_canceled) && !reclaimed &&
+                                                        <Button onClick={claim_ticket_refund} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
+                                                            Reclaim ticket refund
+                                                        </Button> }
+                                                        <TicketDialog theme={feltToString(data?.theme)} startDate={startDateResponse.dateTime} endDate={endDateResponse.dateTime} location={feltToString(data?.event_type)} id={id} deployAccount={deployAccount} getStatus={getStatus} getAccount={getAccount} tba={tba} />
+                                                    </div>
                                                 }
                                             </div>
                                     }
