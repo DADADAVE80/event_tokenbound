@@ -19,6 +19,7 @@ import { Contract, RpcProvider } from 'starknet'
 import eventAbi from './Abis/eventAbi.json'
 import strkAbi from './Abis/strkAbi.json'
 
+
 const App = () => {
   // '0x020e084281a8b2c1d390ca95f0b4644b418066c5865da48745ee2923fc7693d5'
   const token_addr = '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d'
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/settings" element={status == 'disconnected' ? <LandingPage /> : <Settings />} />
         <Route path="/tickets" element={status == 'disconnected' ? <LandingPage /> : <Tickets />} />
         {/* <Route path="/test" element={<Test />} /> */}
+        {/* <Toaster /> */}
       </Routes>
     </KitContext.Provider>
     </StarknetProvider>
