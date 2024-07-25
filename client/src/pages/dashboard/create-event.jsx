@@ -3,13 +3,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '../../Components/shared/button'
 import Layout from '../../Components/dashboard/layout'
 import { KitContext } from '../../context/kit-context'
+import {ethers} from 'ethers'
 
 
 const CreateEvent = () => {
     const {eventContract} = useContext(KitContext)
 
     function padWithZeros(value) {
-        return Number(value + '0'.repeat(18));
+        return BigInt(value + '0'.repeat(18));
       }
 
 
@@ -36,7 +37,7 @@ const CreateEvent = () => {
         
         try {
            
-            await eventContract.create_event(formData.theme, formData.type, _start_date, _end_date, padWithZeros(formData.ticketPrice), formData.total_ticket)
+            await eventContract.create_event(formData.theme, formData.type, _start_date, _end_date, formData.ticketPrice, formData.total_ticket)
             alert('succesfully added')
             
         } catch (error) {

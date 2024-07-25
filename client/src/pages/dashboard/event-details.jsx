@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Layout from '../../Components/dashboard/layout'
 import { useContractRead } from '@starknet-react/core';
 import { useParams } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { CalendarIcon, ClockIcon, HandCoins, MapPinIcon, Tags, Ticket, TicketChe
 import { feltToString } from '../../helpers';
 import { epochToDatetime } from 'datetime-epoch-conversion';
 import { MdLiveTv } from "react-icons/md";
+import { TokenboundClient } from 'starknet-tokenbound-sdk';
 
 
 const EventDetails = () => {
@@ -25,45 +26,19 @@ const EventDetails = () => {
         watch: true,
     });
 
+    const { data: userTicket, isError: userTicketIsError, isLoading: userTicketIsLoading, error: userTicketError } = useContractRead({
+        functionName: "user_event_ticket",
+        args: [id, address],
+        abi: eventAbi,
+        address: contractAddr,
+        watch: true,
+    });
+
     console.log(data)
+    console.log(Number(userTicket))
 
     const startDateResponse = epochToDatetime(String(data?.start_date))
     const endDateResponse = epochToDatetime(String(data?.end_date))
-
-    // const {end_date, event_ticket_addr, event_type, is_canceled, organizer,  start_date, theme, ticket_price, tickets_sold, total_tickets} = data
-
-    // const parseData = (data) => {
-    //     if (!data) return undefined;
-
-    //     return data.map((item) => ({
-    //         id: item.id,
-    //         theme: item.theme,
-    //         organizer: item.organizer,
-    //         type: item.type,
-    //         start_time: item.start_time,
-    //         end_time: item.end_time,
-    //       }));
-    // }
-
-    // const trial = parseData(data)
-
-    // const getEventDetails = async () => {
-    //     try {
-
-    //         const eventDetails = await readEventContract.get_event(id);
-
-    //         setEvent({
-    //             theme: eventDetails.theme.toString()
-    //         })
-
-    //         console.log(eventDetails, event)
-
-    //     } catch (error) {
-    //         alert(error.message)
-    //     }
-    // }
-
-    // getEventDetails()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -78,6 +53,51 @@ const EventDetails = () => {
             console.log(error)
         }
     }
+
+    // tokenbound integration
+    const options = {
+        account: account,
+        registryAddress: `0x4101d3fa033024654083dd982273a300cb019b8cb96dd829267a4daf59f7b7e`,
+        implementationAddress: `0x45d67b8590561c9b54e14dd309c9f38c4e2c554dd59414021f9d079811621bd`,
+        jsonRPC: `https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_7/RCp5m7oq9i9myxsvC8ctUmNq2Wq2Pa_v`
+    }
+
+    let tokenbound;
+
+    if (account) {
+        tokenbound = new TokenboundClient(options)
+    }
+
+    console.log(tokenbound)
+
+    // get account status
+    const getStatus = async () => {
+        const status = await tokenbound.checkAccountDeployment({
+            tokenContract: `0x${data?.event_ticket_addr.toString(16)}`,
+            tokenId: userTicket,
+            salt: "3000000000"
+        })
+
+        console.log(status)
+    }
+
+
+    const deployAccount = async () => {
+        try {
+            await tokenbound.createAccount({
+                tokenContract: `0x${data?.event_ticket_addr.toString(16)}`,
+                tokenId: userTicket,
+                salt: "3000000000"
+            })
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getStatus()
+    }, [])
 
     return (
         <Layout>
@@ -189,9 +209,16 @@ const EventDetails = () => {
                                               </Button>
                                           </div></>:
                                             <div className="flex">
-                                                <Button onClick={handleSubmit} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
-                                                    Get ticket
-                                                </Button>
+                                                {Number(userTicket) == 0  ? 
+                                                    <Button onClick={handleSubmit} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
+                                                        Get ticket
+                                                    </Button>
+                                                    :
+                                                    <Button onClick={deployAccount} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
+                                                        verify your ticket
+                                                    </Button>
+                                                }
+                                                
                                             </div>
                                     }
                                 </div>
