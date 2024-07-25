@@ -17,12 +17,12 @@ import CreateEvent from './pages/dashboard/create-event'
 import { useContract } from "@starknet-react/core";
 import { Contract, RpcProvider } from 'starknet'
 import eventAbi from './Abis/eventAbi.json'
+import strkAbi from './Abis/strkAbi.json'
 
 const App = () => {
-
-  // '0x03a6401c4b28ad044e00b85b3126663cc060098c8323b62d823a60fca10ed215'
-  // 0x03d83aa74ff27203941cef0c4d8d4195590216abd2be3d86aeb3b930e0c9cc77
-  const contractAddr = '0x0466a1660c2f4a36aa58f463c2352dcc73780f02429ea7ce21ed78d538c5f1b4';
+  // '0x020e084281a8b2c1d390ca95f0b4644b418066c5865da48745ee2923fc7693d5'
+  const token_addr = '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d'
+  const contractAddr = '0x767b1f18bcfe9f131d797fdefe0a5adc8d268cf67d0b3f02122b3e56f3aa38d';
   const { connect, connectors } = useConnect();
   const { account, address, status} = useAccount();
   const { disconnect } = useDisconnect();
@@ -33,10 +33,12 @@ const App = () => {
 
   const eventContract = new Contract(eventAbi, contractAddr, account)
   const readEventContract = new Contract(eventAbi, contractAddr, providers)
+  const strkContract = new Contract(strkAbi, token_addr, account)
+
 
   return (
     <StarknetProvider>
-      <KitContext.Provider value={{connect, disconnect, connectors, address, account, contract, contractAddr, eventAbi, eventContract, readEventContract}}>
+      <KitContext.Provider value={{connect, disconnect, connectors, address, account, contract, contractAddr, eventAbi, eventContract, readEventContract, strkContract}}>
       <Routes>
         <Route path="/" element={status == 'disconnected' ? <LandingPage /> : <Dashboard />} />
         <Route path="/dashboard" element={status == 'disconnected' ? <LandingPage /> : <Dashboard />} />
