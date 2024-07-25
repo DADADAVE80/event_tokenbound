@@ -8,6 +8,11 @@ import { KitContext } from '../../context/kit-context'
 const CreateEvent = () => {
     const {eventContract} = useContext(KitContext)
 
+    function padWithZeros(value) {
+        return Number(value + '0'.repeat(18));
+      }
+
+
     const [formData, setFormData] = useState({
         theme: '',
         total_ticket: '',
@@ -31,7 +36,7 @@ const CreateEvent = () => {
         
         try {
            
-            await eventContract.create_event(formData.theme, formData.type, _start_date, _end_date, formData.ticketPrice, formData.total_ticket)
+            await eventContract.create_event(formData.theme, formData.type, _start_date, _end_date, padWithZeros(formData.ticketPrice), formData.total_ticket)
             alert('succesfully added')
             
         } catch (error) {
