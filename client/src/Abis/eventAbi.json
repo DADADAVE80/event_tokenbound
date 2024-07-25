@@ -109,6 +109,10 @@
             {
               "name": "_ticket_price",
               "type": "core::integer::u256"
+            },
+            {
+              "name": "_total_tickets",
+              "type": "core::integer::u256"
             }
           ],
           "outputs": [
