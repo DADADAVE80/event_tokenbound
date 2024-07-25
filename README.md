@@ -42,4 +42,4 @@ with tickets in form of NFT's we can easily make all tickets tokenbound accounts
 ### EVENT CONTRACT ADDRESS: 
 0x0767b1f18bcfe9f131d797fdefe0a5adc8d268cf67d0b3f02122b3e56f3aa38d
 
-link [https://sepolia.voyager.online/contract/0x0767b1f18bcfe9f131d797fdefe0a5adc8d268cf67d0b3f02122b3e56f3aa38d]
+<https://sepolia.voyager.online/contract/0x0767b1f18bcfe9f131d797fdefe0a5adc8d268cf67d0b3f02122b3e56f3aa38d>
