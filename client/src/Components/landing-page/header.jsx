@@ -14,7 +14,7 @@ const Header = () => {
         <Button variant="link" className="text-black text-lg">Analytics</Button>
         </div>
         <div className='flex gap-4'>
-        <ul>
+        <ul className='flex gap-4'>
           {connectors.map((connector) => (
             <li key={connector.id}>
               <Button onClick={() => connect({ connector })} variant="outline" className="text-deep-blue border-deep-blue px-8">Connect {connector.name}</Button>

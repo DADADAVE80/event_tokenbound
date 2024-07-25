@@ -14,9 +14,9 @@ import {
 import strkAbi from '../../Abis/strkAbi.json'
 import { useContractRead } from '@starknet-react/core';
 
-const TicketDialog = ({theme, startDate, endDate, location, id, deployAccount, tba, getAccount}) => {
+const TicketDialog = ({ theme, startDate, endDate, location, id, deployAccount, tba, getAccount }) => {
 
-    const { data, isError, isLoading, error} = useContractRead({
+    const { data, isError, isLoading, error } = useContractRead({
         functionName: "balance_of",
         args: [tba],
         abi: strkAbi,
@@ -47,24 +47,16 @@ const TicketDialog = ({theme, startDate, endDate, location, id, deployAccount, t
                                     size={200}
                                     bgColor="transparent"
                                     fgColor="black"
-                                    value={`${theme} event ticket`}
+                                    value={`https://collectors.poap.xyz/drop/172874`}
                                 />
                             </div>
-                            <div className="text-center flex flex-col gap-3">
-                                {/* {
-                                    isCancelled ?
-                                        <p>Status: <span className="text-red-900">Not verified</span></p> : <p>Status: <span className="text-green-900">verified</span></p> 
-                                } */}
-                                {<p>Status: <span className="text-red-900">Not verified</span></p>}
-                            </div>
+                                <div className='flex gap-1'>
+                                    <h2 className='font-medium text-[#777D7F]'>TBA Balance: </h2>
+                                    <h4 className='text-slate-700 font-semibold'>{data?.toString()} STRK</h4>
+                                </div> 
                         </div>
                     </div>
-                    <div>
-                        <h4>strk</h4>
-                        {data && data.toString() != 0 ? <h4>{data.toString()}</h4> : ''}
-                    </div>
                     <DialogFooter>
-                        <Button  onClick={deployAccount} className="bg-deep-blue text-primary hover:text-deep-blue">Verify Ticket</Button>
                         <Button onClick={getAccount}>get Assets</Button>
                     </DialogFooter>
                 </DialogContent>

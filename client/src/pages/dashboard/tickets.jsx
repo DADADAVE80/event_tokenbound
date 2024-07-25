@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from '../../Components/dashboard/layout'
-import TicketCard from '../../Components/dashboard/ticket-card'
+import ComingSoon from "../../Components/dashboard/coming-soon"
 
 const Tickets = () => {
     const tickets = [

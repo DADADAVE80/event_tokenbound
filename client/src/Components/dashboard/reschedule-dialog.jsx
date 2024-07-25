@@ -10,6 +10,7 @@ import {
     DialogTrigger,
 } from "../shared/dialog"
 import { KitContext } from "../../context/kit-context"
+import toast from "react-hot-toast"
 
 export function RescheduleDialog({ id }) {
 
@@ -28,18 +29,18 @@ export function RescheduleDialog({ id }) {
 
     const rescheduleEvent = async (e) => {
         e.preventDefault()
-
+        const toast1 = toast.loading('rescheduling Events')
         const _start_date = new Date(formData.startTime).getTime() / 1000;
         const _end_date = new Date(formData.endTime).getTime() / 1000;
 
         try {
 
             await eventContract.reschedule_event(id, _start_date, _end_date)
-            alert('succesfully added')
-
+            toast.remove(toast1);
+            toast.success("Event rescheduled")
         } catch (error) {
-            alert(error.message)
-            console.log(error)
+            toast.remove(toast1);
+            toast.error(error.message)
         }
     }
 

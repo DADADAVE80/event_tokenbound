@@ -9,10 +9,10 @@ const EventCard = ({id}) => {
     <Card className="w-full max-w-md p-4 border border-muted rounded-lg">
       <img src="/assets/about-image-podcast.jpg" alt="Event Image" className="rounded-t-lg object-cover w-full h-48" />
       <div className="mt-4 space-y-4">
-        <h3 className="text-2xl font-semibold">Outdoor Adventure Retreat</h3>
+        <h3 className="text-2xl font-semibold">First Event</h3>
         <div className="flex items-center space-x-2 text-muted-foreground">
           <CalendarIcon className="w-5 h-5" />
-          <span>June 15, 2024</span>
+          <span>July 23, 2024</span>
         </div>
         <p className="text-sm text-muted-foreground">
           Join us for a weekend of hiking, camping, and exploring the great outdoors.
