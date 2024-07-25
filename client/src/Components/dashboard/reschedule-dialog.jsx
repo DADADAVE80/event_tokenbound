@@ -75,7 +75,7 @@ export function RescheduleDialog({ id }) {
                     </div>
                     <div className="flex flex-col  gap-4">
                         <label htmlFor="username" >
-                            End Date
+                            End Date 
                         </label>
                         <input
                             type="date"

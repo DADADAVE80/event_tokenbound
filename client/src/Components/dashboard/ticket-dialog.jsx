@@ -13,6 +13,7 @@ import {
 
 import strkAbi from '../../Abis/strkAbi.json'
 import { useContractRead } from '@starknet-react/core';
+import { TransferDialog } from './transfer-dialogue';
 
 const TicketDialog = ({ theme, startDate, endDate, location, id, deployAccount, tba, getAccount }) => {
 
@@ -26,6 +27,7 @@ const TicketDialog = ({ theme, startDate, endDate, location, id, deployAccount, 
 
     console.log(data)
 
+    const strkBalance = Number(data?.toString())/1e18
     return (
         <div>
             <Dialog>
@@ -50,9 +52,10 @@ const TicketDialog = ({ theme, startDate, endDate, location, id, deployAccount, 
                                     value={`https://collectors.poap.xyz/drop/172874`}
                                 />
                             </div>
-                                <div className='flex gap-1'>
+                                <div className='flex items-center gap-1'>
                                     <h2 className='font-medium text-[#777D7F]'>TBA Balance: </h2>
-                                    <h4 className='text-slate-700 font-semibold'>{data?.toString()} STRK</h4>
+                                    <h4 className='text-slate-700 font-semibold'>{strkBalance} STRK</h4>
+                                    <TransferDialog tba={tba}/>
                                 </div> 
                         </div>
                     </div>
