@@ -54,12 +54,42 @@ const EventDetails = () => {
         }
     }
 
+    // reschedule event
+    const rescheduleEvent = async (e) => {
+        e.preventDefault()
+
+        try {
+
+            // await eventContract.reschedule_event(id)
+            alert('succesfully added')
+
+        } catch (error) {
+            alert(error.message)
+            console.log(error)
+        }
+    }
+
+    // cancel event
+    const cancelEvent = async (e) => {
+        e.preventDefault()
+
+        try {
+
+            await eventContract.cancel_event(id)
+            alert('succesfully added')
+
+        } catch (error) {
+            alert(error.message)
+            console.log(error)
+        }
+    }
+
     // tokenbound integration
     const options = {
         account: account,
         registryAddress: `0x4101d3fa033024654083dd982273a300cb019b8cb96dd829267a4daf59f7b7e`,
         implementationAddress: `0x45d67b8590561c9b54e14dd309c9f38c4e2c554dd59414021f9d079811621bd`,
-        jsonRPC: `https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_7/RCp5m7oq9i9myxsvC8ctUmNq2Wq2Pa_v`
+        jsonRPC: ``
     }
 
     let tokenbound;
@@ -194,7 +224,7 @@ const EventDetails = () => {
                                         </div>
                                     </div>
                                     {
-                                        address === data?.organizer.toString(16) ?
+                                        address === `0x${data?.organizer.toString(16)}` ?
                                         <>
                                             <div className="flex items-start gap-4 sm:gap-6">
                                                 <HandCoins className="w-6 h-6 text-muted-foreground text-[#777D7F]" />
@@ -203,7 +233,11 @@ const EventDetails = () => {
                                                     <div className="text-muted-foreground text-sm text-slate-700 font-semibold">{String(data?.ticket_price * data?.tickets_sold).slice(0, -18)} STRK</div>
                                                 </div>
                                             </div> 
-                                              <div className="flex">
+                                              <div className="flex gap-8">
+                                              <Button onClick={""} variant={"outline"} size="lg" className="w-full max-w-md text-primary border border-deep-blue text-deep-blue hover:bg-primary hover:text-deep-blue">
+                                                  Reschedule Event
+                                              </Button>
+
                                               <Button onClick={""} size="lg" className="w-full max-w-md text-primary bg-deep-blue hover:bg-primary hover:text-deep-blue">
                                                   Cancel Event
                                               </Button>

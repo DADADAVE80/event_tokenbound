@@ -60,7 +60,7 @@ const Sidebar = () => {
                     <div className='flex gap-3'>
                         <img src='/assets/profile-picture.png' alt='profile-picture' width={71} height={63} />
                         <div className='flex flex-col gap-2 justify-center'>
-                            <p className='text-base text-white font-normal'>{address.slice(0, 5)}*****{address.slice(16, 20)}</p>
+                            <p className='text-base text-white font-normal'>{address.slice(0, 5)}*****{address.slice(61, 65)}</p>
                             <p className='text-base text-white font-normal'>0xgabriel.eth</p>
                         </div>
                     </div>
