@@ -8,13 +8,13 @@ const TestimonialsSection = () => {
         {
             person: "/assets/testimonial-person-one.png",
             name: "Adekunle Stephen",
-            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi.",
+            review: "CrowdPass has revolutionized the way I manage events. The platform's seamless ticketing and analytics features have saved me time and increased attendance.",
             role: "Event Organizer"
         },
         {
             person: "/assets/testimonial-person-two.png",
             name: "Adeola Kenedy",
-            review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi.",
+            review: "I've attended several events managed by CrowdPass, and I'm always impressed by the smooth check-in process and engaging experience. It's a game-changer for event attendees!",
             role: "Event Attendee"
         },
     ]
@@ -30,7 +30,7 @@ const TestimonialsSection = () => {
             <div className='max-w-[1280px] flex gap-6'>
                 <div className='flex flex-col gap-6 '>
                     <h2 className='text-4xl text-deep-blue'>Join Us</h2>
-                    <p className='text-[#777D7F] pt-3'>Discover why event organizers and attendees alike are raving about HostIT. Read their reviews and see how our platform has transformed their event management experience with seamless, secure, and innovative solutions.</p>
+                    <p className='text-[#777D7F] pt-3'>Discover why event organizers and attendees alike are raving about CrowdPass. Read their reviews and see how our platform has transformed their event management experience with seamless, secure, and innovative solutions.</p>
                     <div className='flex items-center gap-4'>
                         <div className='flex gap-4'>
                             <Button size="icon">

@@ -10,7 +10,7 @@ const Footer = () => {
         <div className='flex gap-6 w-full justify-between items-start'>
           <div className='flex flex-col gap-3 w-[430px]'>
             <img src='/assets/hostit-logo.png' height={30} width={150} />
-            <p className='text-[#777D7F] pt-3'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi.</p>
+            <p className='text-[#777D7F] pt-3'>Welcome to CrowdPass, your ultimate event management platform. We empower event organizers to create, manage, and promote their events with ease.</p>
             <div className='p-2 border rounded-md border-deep-blue flex gap-3 '>
               <input type="text" placeholder='Enter email to subsribe to our newsletter' className='border-none' />
               <Button className="text-primary bg-deep-blue hover:text-deep-blue">

@@ -19,7 +19,7 @@ const Tickets = () => {
     ]
     return (
         <Layout>
-            <section className="py-2 md:py-4">
+            {/* <section className="py-2 md:py-4">
                 <div className="container px-4 md:px-6">
                     <div className="mb-8 md:mb-12">
                         <h1 className='text-3xl text-deep-blue font-semibold'>
@@ -36,7 +36,9 @@ const Tickets = () => {
                         }
                     </div>
                 </div>
-            </section>
+            </section> */}
+            <ComingSoon />
+
         </Layout>
     )
 }

@@ -2,27 +2,27 @@ import React from 'react'
 import FeaturesCard from '../features-card'
 
 const FeaturesSection = () => {
-     const featuresData = [
+    const featuresData = [
         {
             icon: "/assets/event-management.png",
             title: "Event Management",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            description: "Streamline your event planning process with our intuitive event management tools. Create, manage, and promote your events with ease."
         }, {
             icon: "/assets/real-time-analytics.png",
             title: "Real Time Analytics",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            description: "Get real-time insights into your event's performance with our analytics dashboard. Track attendance, engagement, and revenue in real-time."
         }, {
             icon: "/assets/poap-integration.png",
             title: "POAP Integration",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            description: "Enhance your event experience with our POAP (Proof of Attendance Protocol) integration. Reward attendees for their participation and create a unique experience."
         }, {
             icon: "/assets/security.png",
             title: "Security",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            description: "Ensure the security and integrity of your event data with our robust security measures. Protect your attendees' information and prevent unauthorized access."
         }, {
             icon: "/assets/decentralized-identity.png",
             title: "Decentralized Identity",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit sapien eu efficitur tristique. Vivamus volutpat ornare ornare. Donec sed sollicitudin turpis. Donec iaculis aliquet mi. "
+            description: "Empower your attendees with decentralized identity management. Allow them to control their own data and identity, while ensuring a seamless event experience."
         },
     ]
 
