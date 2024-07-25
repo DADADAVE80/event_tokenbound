@@ -2,7 +2,6 @@ import React, { useContext, useMemo, useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../Components/shared/card'
 import { Button } from '../../Components/shared/button'
 import Layout from '../../Components/dashboard/layout'
-import {ethers} from 'ethers'
 import { KitContext } from '../../context/kit-context'
 
 
@@ -11,7 +10,7 @@ const CreateEvent = () => {
 
     const [formData, setFormData] = useState({
         theme: '',
-        organizer: '',
+        total_ticket: '',
         type: '',
         startTime: '',
         endTime: '',
@@ -32,7 +31,7 @@ const CreateEvent = () => {
         
         try {
            
-            await eventContract.create_event(formData.theme, formData.type, _start_date, _end_date, formData.ticketPrice)
+            await eventContract.create_event(formData.theme, formData.type, _start_date, _end_date, formData.ticketPrice, formData.total_ticket)
             alert('succesfully added')
             
         } catch (error) {
@@ -61,11 +60,11 @@ const CreateEvent = () => {
                                 />
                             </div>
                             <div className="space-y-2 flex flex-col">
-                                <label htmlFor="organizer" className="text-deep-blue">Organizer</label>
+                                <label htmlFor="organizer" className="text-deep-blue">Expected Attendee</label>
                                 <input 
-                                    id="organizer" placeholder="Enter the organizer's name" type='text' 
-                                    name='organizer'
-                                    value={formData.organizer}
+                                    id="total_ticket" placeholder="100" type='number' 
+                                    name='total_ticket'
+                                    value={formData.total_ticket}
                                     onChange={inputChange}
                                 />
                             </div>
